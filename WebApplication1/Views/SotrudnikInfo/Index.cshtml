@@ -1,0 +1,677 @@
+﻿
+<style>
+    #sotrudnikForm, #changeForm, #actionForm {
+        display: inline-block;
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        margin-right: 20px; /* Отступ между формами */
+    }
+
+        #sotrudnikForm:hover, #changeForm:hover, #actionForm:hover {
+            transform: scale(1.05);
+        }
+
+        #sotrudnikForm div, #changeForm div, #actionForm div {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input, select, button {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+        input:focus, select:focus, button:focus {
+            border-color: dodgerblue;
+        }
+
+        input + span, select + span, button + span {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 14px;
+            pointer-events: none;
+            transition: top 0.3s ease-in-out, font-size 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        input:focus + span, select:focus + span, button:focus + span,
+        input:not(:placeholder-shown) + span, select:not(:placeholder-shown) + span {
+            top: 0;
+            font-size: 12px;
+            color: dodgerblue;
+        }
+
+    button {
+        background-color: dodgerblue;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+        button:hover {
+            background-color: #0066cc;
+        }
+
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-color: #fafafa;
+        margin: 20px;
+    }
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-color: #fafafa;
+        margin: 20px;
+    }
+
+    .mdl-textfield {
+        width: 100%;
+    }
+
+    div {
+        margin-bottom: 20px;
+    }
+
+    button {
+        margin-top: 20px;
+        margin-right: 20px;
+    }
+
+    .panels-container {
+        margin: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+    }
+
+    th, td {
+        border: 1px solid #e0e0e0;
+        text-align: left;
+        padding: 16px;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    th {
+        background-color: #f5f5f5;
+        color: #333;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    td {
+        background-color: #fff;
+        color: #555;
+    }
+
+    tr {
+        position: relative;
+    }
+
+        tr:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        tr:hover:before {
+            opacity: 0.1;
+        }
+
+    tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    img {
+        max-width: 50px;
+        max-height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+    thead tr:hover {
+        background-color: transparent;
+    }
+
+    tbody tr:hover td {
+        background-color: transparent;
+    }
+
+    tbody tr td:hover {
+        background-color: #f9f9f9;
+    }
+
+    tbody tr:hover img {
+        transform: scale(1.1);
+    }
+
+    .animated {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    }
+
+        .animated.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+</style>
+<body>
+@model List<WebApplication2.Sotrudnik>
+@{
+    ViewData["Title"] = "Информация о сотрудниках";
+}
+
+    <table id="sotrudnikTable" class="animated">
+        <thead>
+            <tr>
+                <th class="sortable" data-sort="id">ID</th>
+                <th class="sortable" data-sort="name">Фамилия</th>
+                <th class="sortable" data-sort="ima">Имя</th>
+                <th class="sortable" data-sort="patranomic">Отчество</th>
+                <th class="sortable" data-sort="address">Адрес</th>
+                <th class="sortable" data-sort="birthPlace">Место рождения</th>
+                <th class="sortable" data-sort="birthDate">Дата рождения</th>
+                <th class="sortable" data-sort="militaryIndex">Английский язык</th>
+                <th class="sortable" data-sort="maritalStatus">Семейное положение</th>
+                <th class="sortable" data-sort="identityNumber">Идентификационный номер</th>
+                <th class="sortable" data-sort="okin">ОКИН</th>
+                <th>Аватар</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Данные о сотрудниках -->
+            @foreach (var sotrudnik in Model)
+            {
+                <tr ondblclick="fillChangeForm(this)">
+                    <td>@sotrudnik.Id</td>
+                    <td>@($"{sotrudnik.Lastname}")</td>
+                    <td>@sotrudnik.Firstname</td>
+                    <td>@sotrudnik.Patranomic</td>
+                    <td>@sotrudnik.Adress</td>
+                    <td>@sotrudnik.MestoRojd</td>
+                    <td>@(sotrudnik.Datarojdeniy?.ToShortDateString())</td>
+                    <td>@sotrudnik.InYz</td>
+                    <td>@sotrudnik.Brak</td>
+                    <td>@sotrudnik.IdentityNomer</td>
+                    <td>@sotrudnik.Okin</td>
+                    <td>
+                        @if (sotrudnik.Avatar != null)
+                        {
+                            <img src="data:image;base64,@Convert.ToBase64String(sotrudnik.Avatar)" alt="Аватар" />
+                        }
+                        else
+                        {
+                            <p><em>Изображение отсутствует</em></p>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+   
+        <h2>Добавление нового сотрудника</h2>
+
+    <form id="sotrudnikForm" data-form-type="sotrudnik" class="animated">
+        <div>
+            <label for="Lastname">Фамилия:</label>
+            <input type="text" id="Lastname" name="Lastname">
+        </div>
+
+        <div>
+            <label for="Firstname">Имя:</label>
+            <input type="text" id="Firstname" name="Firstname">
+        </div>
+
+        <div>
+            <label for="Patranomic">Отчество:</label>
+            <input type="text" id="Patranomic" name="Patranomic">
+        </div>
+
+        <div>
+            <label for="Adress">Адрес:</label>
+            <input type="text" id="Adress" name="Adress">
+        </div>
+
+        <div>
+            <label for="MestoRojd">Место рождения:</label>
+            <input type="text" id="MestoRojd" name="MestoRojd">
+        </div>
+
+        <div>
+            <label for="Datarojdeniy">Дата рождения:</label>
+            <input type="date" id="Datarojdeniy" name="Datarojdeniy">
+        </div>
+
+        <div>
+            <label for="InYz">Английский язык:</label>
+            <input type="text" id="InYz" name="InYz">
+        </div>
+
+        <div>
+            <label for="Brak">Семейное положение:</label>
+            <input type="text" id="Brak" name="Brak">
+        </div>
+
+        <div>
+            <label for="IdentityNomer">Идентификационный номер:</label>
+            <input type="text" id="IdentityNomer" name="IdentityNomer">
+        </div>
+
+        <div>
+            <label for="Okin">ОКИН:</label>
+            <input type="text" id="Okin" name="Okin">
+        </div>
+
+        <div class="form-group">
+            <label for="Photo">Выбрать фотографию:</label>
+            <input type="file" name="Photo" id="Photo" class="form-control-file">
+        </div>
+        <button type="button" onclick="addSotrudnik()">Добавить сотрудника</button>
+    </form>
+    <form id="changeForm" data-form-type="change" class="animated">
+        <div>
+            <label for="ID">ID:</label>
+            <input type="text" id="ID" name="ID">
+        </div>
+        <div>
+            <label for="Lastname">Фамилия:</label>
+            <input type="text" id="Lastname" name="Lastname">
+        </div>
+        <div>
+            <label for="Firstname">Имя:</label>
+            <input type="text" id="Firstname" name="Firstname">
+        </div>
+        <div>
+            <label for="Patranomic">Отчество:</label>
+            <input type="text" id="Patranomic" name="Patranomic">
+        </div>
+        <div>
+            <label for="Adress">Адрес:</label>
+            <input type="text" id="Adress" name="Adress">
+        </div>
+        <div>
+            <label for="MestoRojd">Место рождения:</label>
+            <input type="text" id="MestoRojd" name="MestoRojd">
+        </div>
+        <div>
+            <label for="Datarojdeniy">Дата рождения:</label>
+            <input type="date" id="Datarojdeniy" name="Datarojdeniy">
+        </div>
+        <div>
+            <label for="InYz">Английский язык:</label>
+            <input type="text" id="InYz" name="InYz">
+        </div>
+        <div>
+            <label for="Brak">Семейное положение:</label>
+            <input type="text" id="Brak" name="Brak">
+        </div>
+        <div>
+            <label for="IdentityNomer">Идентификационный номер:</label>
+            <input type="text" id="IdentityNomer" name="IdentityNomer">
+        </div>
+        <div>
+            <label for="Okin">ОКИН:</label>
+            <input type="text" id="Okin" name="Okin">
+        </div>
+        <div class="form-group">
+            <label for="PhotoChange">Выбрать фотографию:</label>
+            <input type="file" name="PhotoChange" id="PhotoChange" class="form-control-file">
+        </div>
+        <button type="button" onclick="performChange()">Изменить</button>
+    </form>
+
+    <!-- Форма Действие -->
+    <form id="actionForm" class="animated">
+        <!-- Поля для данных о действии -->
+        <div>
+            <label for="ActionType">Тип действия:</label>
+            <select id="ActionType" name="ActionType">
+                <option value="action1">Действие 1</option>
+                <option value="action2">Действие 2</option>
+                <option value="action3">Действие 3</option>
+            </select>
+        </div>
+        <!-- Другие поля формы... -->
+        <div class="buttons-container">
+            <button type="button" onclick="performAction()">Выполнить</button>
+            <button type="button" onclick="undoAction()">Отменить</button>
+            <button type="button" onclick="redoAction()">Повторить</button>
+        </div>
+    </form>
+    <div id="particles-js"></div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    // Добавляем класс "show" для запуска анимации после загрузки страницы
+    document.addEventListener("DOMContentLoaded", function () {
+        var animatedElements = document.querySelectorAll('.animated');
+        animatedElements.forEach(function (element) {
+            element.classList.add('show');
+        });
+    });
+</script>
+<script>
+    function fillChangeForm(row) {
+        var cells = row.getElementsByTagName('td');
+        document.getElementById('ID').value = cells[0].innerText;
+        document.getElementById('Lastname').value = cells[1].innerText;
+        document.getElementById('Firstname').value = cells[2].innerText;
+        document.getElementById('Patranomic').value = cells[3].innerText;
+        document.getElementById('Adress').value = cells[4].innerText;
+        document.getElementById('MestoRojd').value = cells[5].innerText;
+
+        // Форматирование даты перед установкой значения
+        var rawBirthDate = cells[6].innerText;
+        document.getElementById('Datarojdeniy').value = formatDateForServer(rawBirthDate);
+
+        document.getElementById('InYz').value = cells[7].innerText;
+        document.getElementById('Brak').value = cells[8].innerText;
+        document.getElementById('IdentityNomer').value = cells[9].innerText;
+        document.getElementById('Okin').value = cells[10].innerText;
+    }
+
+    function performChange() {
+        // Поменял порядок определения функций
+        function formatDateForServer(rawDate) {
+            // Пример: преобразование "31.12.2022" в "2022-12-31"
+            var parts = rawDate.split('.');
+            if (parts.length === 3) {
+                return parts[2] + '-' + parts[1] + '-' + parts[0];
+            }
+            return rawDate; // Если не удалось преобразовать, вернуть исходное значение
+        }
+
+        function formatDateForDisplay(rawDate) {
+            // Проверка на строку перед преобразованием
+            if (typeof rawDate === 'string') {
+                // Пример: преобразование "2022-12-31" в "31.12.2022"
+                var parts = rawDate.split('-');
+                if (parts.length === 3) {
+                    return parts[2] + '.' + parts[1] + '.' + parts[0];
+                }
+            }
+            return rawDate; // Если не удалось преобразовать, вернуть исходное значение
+        }
+
+        var formDataChange = new FormData(document.getElementById('changeForm'));
+
+        // Преобразовать значение даты перед отправкой
+        var rawBirthDate = formDataChange.get('Datarojdeniy');
+        formDataChange.set('Datarojdeniy', formatDateForServer(rawBirthDate));
+
+        $.ajax({
+            url: '/api/UpdateSotrudnik',
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: formDataChange,
+            success: function (response) {
+                console.log(response);
+
+                if (response.success) {
+                    var rowToUpdate = $("table tbody tr[data-id='" + response.id + "']");
+                    rowToUpdate.find("td:eq(1)").text(response.name);
+                    rowToUpdate.find("td:eq(2)").text(response.address);
+                    rowToUpdate.find("td:eq(3)").text(response.birthPlace);
+
+                    // Форматировать дату перед обновлением
+                    var formattedBirthDate = formatDateForDisplay(response.birthDate);
+                    rowToUpdate.find("td:eq(4)").text(formattedBirthDate);
+
+                    rowToUpdate.find("td:eq(5)").text(response.militaryIndex);
+                    rowToUpdate.find("td:eq(6)").text(response.maritalStatus);
+                    rowToUpdate.find("td:eq(7)").text(response.identityNumber);
+                    rowToUpdate.find("td:eq(8)").text(response.okin);
+
+                    // Добавим фотографию
+                    rowToUpdate.find("td:eq(9)").html("<img src='data:image;base64," + response.avatar + "' alt='Аватар' />");
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+</script>
+
+<script>
+    function addSotrudnik() {
+        // Проверяем, выбрана ли фотография
+        var photoInput = document.getElementById('Photo');
+        if (photoInput.files.length === 0) {
+            alert('Выберите фотографию!');
+            return; // Прерываем выполнение функции, если фотография не выбрана
+        }
+
+        // Собираем данные из формы
+        var formData = new FormData(document.getElementById('sotrudnikForm'));
+
+        // Отправляем данные на сервер
+        $.ajax({
+            url: '/api/AddSotrudnik', // Укажите правильный URL для вашего сервера
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (response) {
+                // Обработка успешного ответа от сервера
+                console.log(response);
+
+                // Очищаем поля формы
+                document.getElementById('sotrudnikForm').reset();
+
+                // Обновляем таблицу
+                if (response.success) {
+                    // Создаем новую строку для таблицы
+                    var newRow = "<tr>" +
+                        "<td>" + response.id + "</td>" +
+                        "<td>" + response.name + "</td>" +
+                        "<td>" + response.address + "</td>" +
+                        "<td>" + response.birthPlace + "</td>" +
+                        "<td>" + response.birthDate + "</td>" +
+                        "<td>" + response.militaryIndex + "</td>" +
+                        "<td>" + response.maritalStatus + "</td>" +
+                        "<td>" + response.identityNumber + "</td>" +
+                        "<td>" + response.okin + "</td>" +
+                        "<td><img src='data:image;base64," + response.avatar + "' alt='Аватар' /></td>" +
+                        "</tr>";
+
+                    // Вставляем новую строку в конец таблицы
+                    $("table tbody").append(newRow);
+                }
+            },
+            error: function (error) {
+                // Обработка ошибки
+                console.log(error);
+            }
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+    function fillChangeForm(row) {
+        var form = findAncestorForm(row);
+
+        // Проверка, что переменная формы не является нулевой
+        if (form) {
+            var formType = form.getAttribute('data-form-type');
+            if (formType !== 'change') {
+                console.log('Not inside changeForm');
+                return;
+            }
+
+            // Ваш существующий код для заполнения полей формы
+            var cells = row.getElementsByTagName('td');
+            var fieldToChangeSelect = document.getElementById('FieldToChange');
+            var IDin = document.getElementById('ID');
+            var lastnameInput = document.getElementById('Lastname');
+            var firstnameInput = document.getElementById('Firstname');
+            var patranomicInput = document.getElementById('Patranomic');
+            var adressInput = document.getElementById('Adress');
+            var mestoRojdInput = document.getElementById('MestoRojd');
+            var datarojdeniyInput = document.getElementById('Datarojdeniy');
+            var inYzInput = document.getElementById('InYz');
+            var brakInput = document.getElementById('BrakChange');
+            var identityNomerInput = document.getElementById('IdentityNomer');
+            var okinInput = document.getElementById('Okin');
+
+            fieldToChangeSelect.value = '';
+            fieldToChangeSelect.value = cells[0].getAttribute('data-sort');
+            IDin.value = cells[0].innerText;
+            lastnameInput.value = cells[1].innerText;
+            firstnameInput.value = cells[2].innerText;
+            patranomicInput.value = cells[3].innerText;
+            adressInput.value = cells[4].innerText;
+            mestoRojdInput.value = cells[5].innerText;
+            datarojdeniyInput.value = cells[6].innerText;
+            inYzInput.value = cells[7].innerText;
+            brakInput.value = cells[8].innerText;
+            identityNomerInput.value = cells[9].innerText;
+            okinInput.value = cells[10].innerText;
+        } else {
+            console.log('Not inside any form');
+        }
+    }
+    <script>document.addEventListener('DOMContentLoaded', function () {
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#3498db'
+                },
+                shape: {
+                    type: 'circle',
+                    stroke: {
+                        width: 0,
+                        color: '#3498db'
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    }
+                },
+                opacity: {
+                    value: 0.7,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 40,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#3498db',
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'grab'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 400,
+                        size: 40,
+                        duration: 2,
+                        opacity: 8,
+                        speed: 3
+                    },
+                    repulse: {
+                        distance: 200,
+                        duration: 0.4
+                    },
+                    push: {
+                        particles_nb: 4
+                    },
+                    remove: {
+                        particles_nb: 2
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    });</script>
+
+
+
