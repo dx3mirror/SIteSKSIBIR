@@ -107,6 +107,7 @@ body {
 .font-size-30 {
   font-size: 30px; }
 
+
 .gradient-2, .site-footer, .top-bar {
     background: #457B9D;
     background: -moz-linear-gradient(left, #457B9D 0%, #1D3557 100%);
@@ -119,8 +120,6 @@ body {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#457B9D', endColorstr='#1D3557', GradientType=1 );
 }
 
-
-. /* Gray Text Colors */
 .font-gray-1 {
     color: #f7f7f7;
 }

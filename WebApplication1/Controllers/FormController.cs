@@ -1,17 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using WebApplication1.Models;
+using WebApplication1.UnitOfWork;
 using WebApplication2;
 
 namespace WebApplication1.Controllers
 {
     public class FormController : Controller
     {
-        
+        private readonly IRequestUnitOfWork _unitOfWork;
         private readonly ILogger<FormController> _logger;
         private readonly KadrovikContext _context;
 
-        public FormController(ILogger<FormController> logger, KadrovikContext context)
+        public FormController(ILogger<FormController> logger,
+            KadrovikContext context,
+            IRequestUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _logger = logger;
             _context = context;
         }
@@ -25,23 +30,31 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult ProcessForm(YourModelNamespace model)
         {
-
-            _logger.LogInformation($"Received form data: Last Name - {model.LastName}, First Name - {model.FirstName}, Email - {model.Email}, About - {model.About}");
-
-            var requestSite = new RequestSite
+            try
             {
-                LastName = model.LastName,
-                FirstName = model.FirstName,
-                Email = model.Email,
-                About = model.About
-            };
+                var requestSite = new RequestSite
+                {
+                    LastName = model.LastName,
+                    FirstName = model.FirstName,
+                    Email = model.Email,
+                    About = model.About
+                };
 
-            _context.RequestSites.Add(requestSite);
+                _unitOfWork.RequestSiteRepository.Add(requestSite);
 
-            // Сохраняем изменения в базе данных
-            _context.SaveChanges();
+                _unitOfWork.SaveChanges();
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                StringBuilder errorMessage = new StringBuilder("Произошла ошибка при обработке вашего запроса. ");
+                errorMessage.Append(ex.Message);
+
+                ModelState.AddModelError(string.Empty, errorMessage.ToString());
+                return View();
+            }
         }
+
     }
 }

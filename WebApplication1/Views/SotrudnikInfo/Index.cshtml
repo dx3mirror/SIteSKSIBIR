@@ -1,14 +1,23 @@
 ﻿
 <style>
     #sotrudnikForm, #changeForm, #actionForm {
-        display: inline-block;
-        max-width: 400px;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
-        margin-right: 20px; /* Отступ между формами */
+    display: inline-block;
+    vertical-align: top;
+    width: 30%;
+    max-width: 400px;
+    padding: 20px;
+    border: 1px solid #282828;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    margin-right: 20px;
+    box-sizing: border-box;
+    background-color: #282828; /* Черный цвет фона */
+}
+
+    #sotrudnikForm, #changeForm, #actionForm,
+    label, input, select, button {
+        color: #fff;
     }
 
         #sotrudnikForm:hover, #changeForm:hover, #actionForm:hover {
@@ -26,52 +35,122 @@
         font-weight: bold;
     }
 
-    input, select, button {
-        width: 100%;
+    input {
+        font-size: 18px;
         padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-        transition: border-color 0.3s ease-in-out;
+        display: block;
+        width: 100%;
+        border: 1px solid dodgerblue;
+        background-color: transparent;
+        color: #fff;
+        transition: all 0.5s;
+        outline: none;
+        transform-origin: bottom left;
+        position: relative;
+        z-index: 1;
     }
 
-        input:focus, select:focus, button:focus {
-            border-color: dodgerblue;
+        input:hover {
+            border-color: lightblue;
+            color: lightblue;
         }
 
-        input + span, select + span, button + span {
+        input:focus {
+            border-color: limegreen;
+            background-color: rgba(0, 128, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+    .bar {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+        .bar:before, .bar:after {
+            content: '';
             position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            font-size: 14px;
-            pointer-events: none;
-            transition: top 0.3s ease-in-out, font-size 0.3s ease-in-out, color 0.3s ease-in-out;
+            height: 2px;
+            width: 0;
+            bottom: 0;
+            background: limegreen;
+            transition: width 0.5s, background 0.5s;
         }
 
-        input:focus + span, select:focus + span, button:focus + span,
-        input:not(:placeholder-shown) + span, select:not(:placeholder-shown) + span {
-            top: 0;
-            font-size: 12px;
-            color: dodgerblue;
-        }
+    input:focus + .bar:before,
+    input:focus + .bar:after {
+        width: 50%;
+        background: limegreen;
+    }
+
+    input:not(:placeholder-shown) + .bar:before,
+    input:not(:placeholder-shown) + .bar:after {
+        width: 50%;
+        background: lightblue;
+    }
+
+    .floating-label {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        pointer-events: none;
+        transition: transform 0.5s, color 0.5s;
+    }
+
+    input:focus + .bar .floating-label,
+    input:not(:placeholder-shown) + .bar .floating-label {
+        transform: translateY(-20px) scale(0.8);
+        color: limegreen;
+    }
 
     button {
         background-color: dodgerblue;
         color: #fff;
         cursor: pointer;
-        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        padding: 12px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
     }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        button:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
 
         button:hover {
             background-color: #0066cc;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: none;
         }
 
     body {
         font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-        background-color: #fafafa;
+        background-image: url('/images/123.jpg');
+        background-size: cover;
+        background-position: center;
         margin: 20px;
     }
     body {
@@ -104,13 +183,16 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         overflow: hidden;
+        border-radius: 40px;
+        background-color: #282828; /* Добавляем прозрачность таблице */
     }
 
     th, td {
         border: 1px solid #e0e0e0;
         text-align: left;
         padding: 16px;
-        transition: background-color 0.3s ease-in-out;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Добавлено изменение цвета текста */
+        background-color: transparent; /* Добавляем прозрачность ячейкам */
     }
 
     th {
@@ -121,33 +203,23 @@
     }
 
     td {
-        background-color: #fff;
-        color: #555;
+        color: #fff; /* Белый цвет текста внутри ячейки */
     }
 
     tr {
         position: relative;
+        transition: box-shadow 0.3s ease-in-out; /* Добавлено изменение тени при наведении на строку */
     }
-
-        tr:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #3498db, #9b59b6);
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        tr:hover:before {
-            opacity: 0.1;
-        }
 
     tbody tr:hover {
         background-color: #f9f9f9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Добавлено применение тени при наведении на строку */
     }
+
+        tbody tr:hover td {
+            background-color: transparent;
+            color: #000; /* Черный цвет текста при наведении */
+        }
 
     img {
         max-width: 50px;
@@ -165,28 +237,33 @@
         background-color: transparent;
     }
 
-    tbody tr:hover td {
-        background-color: transparent;
-    }
-
-    tbody tr td:hover {
-        background-color: #f9f9f9;
-    }
-
     tbody tr:hover img {
         transform: scale(1.1);
     }
 
-    .animated {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    .btn-link {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #ffffff;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin: 10px 10px 10px 10px; /* Отступ между кнопками (сверху, справа, снизу, слева) */
     }
 
-        .animated.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .buttons-container {
+        margin-top: 20px; /* Отступ сверху для контейнера кнопок (по желанию) */
+    }
+
+    .btn-link:hover {
+        background-color: #0056b3; /* Цвет фона кнопки при наведении */
+        color: #ffffff; /* Цвет текста кнопки при наведении */
+    }
+
 </style>
 <body>
 @model List<WebApplication2.Sotrudnik>
@@ -197,7 +274,7 @@
     <table id="sotrudnikTable" class="animated">
         <thead>
             <tr>
-                <th class="sortable" data-sort="id">ID</th>
+                <th class="sortable" data-sort="id" style="display: none;">ID</th>
                 <th class="sortable" data-sort="name">Фамилия</th>
                 <th class="sortable" data-sort="ima">Имя</th>
                 <th class="sortable" data-sort="patranomic">Отчество</th>
@@ -215,8 +292,8 @@
             <!-- Данные о сотрудниках -->
             @foreach (var sotrudnik in Model)
             {
-                <tr ondblclick="fillChangeForm(this)">
-                    <td>@sotrudnik.Id</td>
+                <tr onclick="handleRowClick(this)">
+                    <td style="display: none;">@sotrudnik.Id</td>
                     <td>@($"{sotrudnik.Lastname}")</td>
                     <td>@sotrudnik.Firstname</td>
                     <td>@sotrudnik.Patranomic</td>
@@ -241,60 +318,63 @@
             }
         </tbody>
     </table>
-   
-        <h2>Добавление нового сотрудника</h2>
-
+    <form id="FormPosk" class="animated">
+        <div>
+            <label for="Okin">Поиск:</label>
+            <input type="text" id="Poisk" name="Poisk" placeholder="Начать поиск">
+        </div>
+    </form>
     <form id="sotrudnikForm" data-form-type="sotrudnik" class="animated">
+        <label for="NameForm">Добавление записи:</label>
         <div>
             <label for="Lastname">Фамилия:</label>
-            <input type="text" id="Lastname" name="Lastname">
+            <input type="text" id="Lastname" name="Lastname" placeholder="Введите фамилию">
         </div>
 
         <div>
             <label for="Firstname">Имя:</label>
-            <input type="text" id="Firstname" name="Firstname">
+            <input type="text" id="Firstname" name="Firstname" placeholder="Введите имя">
         </div>
 
         <div>
             <label for="Patranomic">Отчество:</label>
-            <input type="text" id="Patranomic" name="Patranomic">
+            <input type="text" id="Patranomic" name="Patranomic" placeholder="Введите отчество">
         </div>
 
         <div>
             <label for="Adress">Адрес:</label>
-            <input type="text" id="Adress" name="Adress">
+            <input type="text" id="Adress" name="Adress" placeholder="Введите адрес">
         </div>
 
         <div>
             <label for="MestoRojd">Место рождения:</label>
-            <input type="text" id="MestoRojd" name="MestoRojd">
+            <input type="text" id="MestoRojd" name="MestoRojd" placeholder="Введите место рождения">
         </div>
 
         <div>
             <label for="Datarojdeniy">Дата рождения:</label>
-            <input type="date" id="Datarojdeniy" name="Datarojdeniy">
+            <input type="date" id="Datarojdeniy" name="Datarojdeniy" placeholder="Выберите дату рождения">
         </div>
 
         <div>
             <label for="InYz">Английский язык:</label>
-            <input type="text" id="InYz" name="InYz">
+            <input type="text" id="InYz" name="InYz" placeholder="Введите уровень английского языка">
         </div>
 
         <div>
             <label for="Brak">Семейное положение:</label>
-            <input type="text" id="Brak" name="Brak">
+            <input type="text" id="Brak" name="Brak" placeholder="Введите семейное положение">
         </div>
 
         <div>
             <label for="IdentityNomer">Идентификационный номер:</label>
-            <input type="text" id="IdentityNomer" name="IdentityNomer">
+            <input type="text" id="IdentityNomer" name="IdentityNomer" placeholder="Введите идентификационный номер">
         </div>
 
         <div>
             <label for="Okin">ОКИН:</label>
-            <input type="text" id="Okin" name="Okin">
+            <input type="text" id="Okin" name="Okin" placeholder="Введите ОКИН">
         </div>
-
         <div class="form-group">
             <label for="Photo">Выбрать фотографию:</label>
             <input type="file" name="Photo" id="Photo" class="form-control-file">
@@ -302,49 +382,50 @@
         <button type="button" onclick="addSotrudnik()">Добавить сотрудника</button>
     </form>
     <form id="changeForm" data-form-type="change" class="animated">
-        <div>
+        <label for="NameForm">Изменение записи:</label>
+        <div style="display: none;">
             <label for="ID">ID:</label>
-            <input type="text" id="ID" name="ID">
+            <input type="text" id="ID" name="ID" placeholder="Введите ID">
         </div>
         <div>
             <label for="Lastname">Фамилия:</label>
-            <input type="text" id="Lastname" name="Lastname">
+            <input type="text" id="Lastname" name="Lastname" placeholder="Введите фамилию">
         </div>
         <div>
             <label for="Firstname">Имя:</label>
-            <input type="text" id="Firstname" name="Firstname">
+            <input type="text" id="Firstname" name="Firstname" placeholder="Введите имя">
         </div>
         <div>
             <label for="Patranomic">Отчество:</label>
-            <input type="text" id="Patranomic" name="Patranomic">
+            <input type="text" id="Patranomic" name="Patranomic" placeholder="Введите отчество">
         </div>
         <div>
             <label for="Adress">Адрес:</label>
-            <input type="text" id="Adress" name="Adress">
+            <input type="text" id="Adress" name="Adress" placeholder="Введите адрес">
         </div>
         <div>
             <label for="MestoRojd">Место рождения:</label>
-            <input type="text" id="MestoRojd" name="MestoRojd">
+            <input type="text" id="MestoRojd" name="MestoRojd" placeholder="Введите место рождения">
         </div>
         <div>
             <label for="Datarojdeniy">Дата рождения:</label>
-            <input type="date" id="Datarojdeniy" name="Datarojdeniy">
+            <input type="date" id="Datarojdeniy" name="Datarojdeniy" placeholder="Выберите дату рождения">
         </div>
         <div>
             <label for="InYz">Английский язык:</label>
-            <input type="text" id="InYz" name="InYz">
+            <input type="text" id="InYz" name="InYz" placeholder="Введите уровень английского языка">
         </div>
         <div>
             <label for="Brak">Семейное положение:</label>
-            <input type="text" id="Brak" name="Brak">
+            <input type="text" id="Brak" name="Brak" placeholder="Введите семейное положение">
         </div>
         <div>
             <label for="IdentityNomer">Идентификационный номер:</label>
-            <input type="text" id="IdentityNomer" name="IdentityNomer">
+            <input type="text" id="IdentityNomer" name="IdentityNomer" placeholder="Введите идентификационный номер">
         </div>
         <div>
             <label for="Okin">ОКИН:</label>
-            <input type="text" id="Okin" name="Okin">
+            <input type="text" id="Okin" name="Okin" placeholder="Введите ОКИН">
         </div>
         <div class="form-group">
             <label for="PhotoChange">Выбрать фотографию:</label>
@@ -353,29 +434,68 @@
         <button type="button" onclick="performChange()">Изменить</button>
     </form>
 
-    <!-- Форма Действие -->
     <form id="actionForm" class="animated">
-        <!-- Поля для данных о действии -->
-        <div>
-            <label for="ActionType">Тип действия:</label>
-            <select id="ActionType" name="ActionType">
-                <option value="action1">Действие 1</option>
-                <option value="action2">Действие 2</option>
-                <option value="action3">Действие 3</option>
-            </select>
-        </div>
-        <!-- Другие поля формы... -->
+        <label for="NameForm">Информация о сотрудниках</label>
         <div class="buttons-container">
-            <button type="button" onclick="performAction()">Выполнить</button>
-            <button type="button" onclick="undoAction()">Отменить</button>
-            <button type="button" onclick="redoAction()">Повторить</button>
+            <a class="btn-link" href="/SotrudnikInfo/Obrozovaniy">Информация о образовании</a>
+            <a class="btn-link" href="/SotrudnikInfo/Family">Информация о семье</a>
+            <a class="btn-link" href="/SotrudnikInfo/Passport">Информация о пасспортных данных</a>
+            <a class="btn-link" href="/SotrudnikInfo/Otpusk">Информация о отпуске</a>
+            <a class="btn-link" href="/SotrudnikInfo/Doljnost">Информация о должности</a>
+        </div>
+    </form>
+    <form id="actionForm" class="animated">
+        <label for="NameForm">Дейсвтия:</label>
+        <div class="buttons-container">
+            <a class="btn-link" href="/Sotrudnik/Index">Вернуться обратно</a>
         </div>
     </form>
     <div id="particles-js"></div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Добавляем класс "show" для запуска анимации после загрузки страницы
+    $(document).ready(function () {
+        // Функция для обработки ввода в поле поиска
+        $("#Poisk").on("input", function () {
+            var searchText = $(this).val().toLowerCase();
+            $("#sotrudnikTable tbody tr").each(function () {
+                var rowText = $(this).text().toLowerCase(); 
+                $(this).toggle(rowText.includes(searchText));
+            });
+        });
+    });
+</script>
+<script>
+    function searchTable() {
+        // Получаем значение поискового слова
+        var searchText = document.getElementById("Poisk").value.toLowerCase();
+
+        // Получаем все строки таблицы
+        var rows = document.getElementById("sotrudnikTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+        // Проходим по каждой строке и каждой ячейке и скрываем/показываем их в зависимости от наличия поискового слова
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            var cells = row.getElementsByTagName("td");
+            var rowVisible = false;
+
+            // Проверяем каждую ячейку на наличие поискового слова
+            for (var j = 0; j < cells.length; j++) {
+                var cellText = cells[j].textContent.toLowerCase();
+                if (cellText.includes(searchText)) {
+                    rowVisible = true;
+                    break;
+                }
+            }
+
+            // Если поисковое слово найдено в хотя бы одной ячейке, показываем строку, в противном случае скрываем
+            row.style.display = rowVisible ? "" : "none";
+        }
+    }
+</script>
+
+<script>
     document.addEventListener("DOMContentLoaded", function () {
         var animatedElements = document.querySelectorAll('.animated');
         animatedElements.forEach(function (element) {
@@ -387,48 +507,29 @@
     function fillChangeForm(row) {
         var cells = row.getElementsByTagName('td');
         document.getElementById('ID').value = cells[0].innerText;
-        document.getElementById('Lastname').value = cells[1].innerText;
-        document.getElementById('Firstname').value = cells[2].innerText;
-        document.getElementById('Patranomic').value = cells[3].innerText;
-        document.getElementById('Adress').value = cells[4].innerText;
-        document.getElementById('MestoRojd').value = cells[5].innerText;
-
-        // Форматирование даты перед установкой значения
-        var rawBirthDate = cells[6].innerText;
-        document.getElementById('Datarojdeniy').value = formatDateForServer(rawBirthDate);
-
-        document.getElementById('InYz').value = cells[7].innerText;
-        document.getElementById('Brak').value = cells[8].innerText;
-        document.getElementById('IdentityNomer').value = cells[9].innerText;
-        document.getElementById('Okin').value = cells[10].innerText;
     }
 
     function performChange() {
-        // Поменял порядок определения функций
         function formatDateForServer(rawDate) {
-            // Пример: преобразование "31.12.2022" в "2022-12-31"
             var parts = rawDate.split('.');
             if (parts.length === 3) {
                 return parts[2] + '-' + parts[1] + '-' + parts[0];
             }
-            return rawDate; // Если не удалось преобразовать, вернуть исходное значение
+            return rawDate;
         }
 
         function formatDateForDisplay(rawDate) {
-            // Проверка на строку перед преобразованием
             if (typeof rawDate === 'string') {
-                // Пример: преобразование "2022-12-31" в "31.12.2022"
                 var parts = rawDate.split('-');
                 if (parts.length === 3) {
                     return parts[2] + '.' + parts[1] + '.' + parts[0];
                 }
             }
-            return rawDate; // Если не удалось преобразовать, вернуть исходное значение
+            return rawDate;
         }
 
         var formDataChange = new FormData(document.getElementById('changeForm'));
 
-        // Преобразовать значение даты перед отправкой
         var rawBirthDate = formDataChange.get('Datarojdeniy');
         formDataChange.set('Datarojdeniy', formatDateForServer(rawBirthDate));
 
@@ -447,7 +548,6 @@
                     rowToUpdate.find("td:eq(2)").text(response.address);
                     rowToUpdate.find("td:eq(3)").text(response.birthPlace);
 
-                    // Форматировать дату перед обновлением
                     var formattedBirthDate = formatDateForDisplay(response.birthDate);
                     rowToUpdate.find("td:eq(4)").text(formattedBirthDate);
 
@@ -456,23 +556,81 @@
                     rowToUpdate.find("td:eq(7)").text(response.identityNumber);
                     rowToUpdate.find("td:eq(8)").text(response.okin);
 
-                    // Добавим фотографию
                     rowToUpdate.find("td:eq(9)").html("<img src='data:image;base64," + response.avatar + "' alt='Аватар' />");
+
+                    // Используем SweetAlert для уведомления
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Успех',
+                        text: 'Данные успешно обновлены!',
+                        timer: 2000
+                    }).then(() => {
+                        // Обновляем страницу после успешного выполнения
+                        location.reload();
+                    });
                 }
             },
             error: function (error) {
                 console.log(error);
+
+                // Используем SweetAlert для уведомления об ошибке
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка',
+                    text: 'Произошла ошибка при обновлении данных.'
+                });
+            }
+        });
+
+</script>
+
+<script>
+    function handleRowClick(row) {
+        var id = row.cells[0].innerText;
+
+        // Присваиваем значение ID полю ввода
+        document.getElementById('ID').value = id;
+
+        var lastName = row.cells[1].innerText;
+        var firstName = row.cells[2].innerText;
+        var patranomic = row.cells[3].innerText;
+
+        var data = {
+            ID: parseInt(id), // Преобразуем строку в число, если ID - числовое поле
+            LastName: lastName,
+            FirstName: firstName,
+            Patranomic: patranomic
+        };
+
+        $.ajax({
+            url: '/api/DateSingle', // Предположим, что у вас есть отдельный метод для одиночного клика
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                console.log(response);
+                // Добавьте код для обработки успешного ответа
+            },
+            error: function (error) {
+                console.log(error);
+                // Добавьте код для обработки ошибки
             }
         });
     }
 </script>
+
 
 <script>
     function addSotrudnik() {
         // Проверяем, выбрана ли фотография
         var photoInput = document.getElementById('Photo');
         if (photoInput.files.length === 0) {
-            alert('Выберите фотографию!');
+            // Используем SweetAlert для уведомления об ошибке
+            Swal.fire({
+                icon: 'error',
+                title: 'Ошибка',
+                text: 'Выберите фотографию!'
+            });
             return; // Прерываем выполнение функции, если фотография не выбрана
         }
 
@@ -493,33 +651,33 @@
                 // Очищаем поля формы
                 document.getElementById('sotrudnikForm').reset();
 
-                // Обновляем таблицу
-                if (response.success) {
-                    // Создаем новую строку для таблицы
-                    var newRow = "<tr>" +
-                        "<td>" + response.id + "</td>" +
-                        "<td>" + response.name + "</td>" +
-                        "<td>" + response.address + "</td>" +
-                        "<td>" + response.birthPlace + "</td>" +
-                        "<td>" + response.birthDate + "</td>" +
-                        "<td>" + response.militaryIndex + "</td>" +
-                        "<td>" + response.maritalStatus + "</td>" +
-                        "<td>" + response.identityNumber + "</td>" +
-                        "<td>" + response.okin + "</td>" +
-                        "<td><img src='data:image;base64," + response.avatar + "' alt='Аватар' /></td>" +
-                        "</tr>";
-
-                    // Вставляем новую строку в конец таблицы
-                    $("table tbody").append(newRow);
-                }
+                // Используем SweetAlert для уведомления об успехе
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Успех',
+                    text: 'Запись успешно создана!',
+                    timer: 2000
+                }).then(() => {
+                    // Обновляем страницу после успешного выполнения
+                    location.reload();
+                });
             },
             error: function (error) {
                 // Обработка ошибки
                 console.log(error);
+
+                // Используем SweetAlert для уведомления об ошибке
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка',
+                    text: 'Произошла ошибка при создании записи.'
+                });
             }
         });
     }
 </script>
+
+
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
     function fillChangeForm(row) {

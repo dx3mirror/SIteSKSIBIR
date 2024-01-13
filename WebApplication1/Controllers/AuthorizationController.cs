@@ -1,60 +1,62 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
-using WebApplication1.Models;
-using Microsoft.Extensions.Logging;
 using WebApplication2;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
+using WebApplication1.Repository;
+using WebApplication1.UnitOfWork;
+using WebApplication1.Strategy;
 
 namespace WebApplication1.Controllers
 {
     public class AuthorizationController : Controller
     {
         private readonly KadrovikContext _dbContext;
+        private readonly IAppUnitOfWork _unitOfWork;
         private readonly ILogger<AuthorizationController> _logger;
-        public AuthorizationController(ILogger<AuthorizationController> logger, KadrovikContext dbContext)
+        private readonly IFailedLoginAttemptRepository _failedLoginAttemptRepository;
+        private readonly ISignInStrategy _signInStrategy;
+        public AuthorizationController(IFailedLoginAttemptRepository failedLoginAttemptRepository,
+            IAppUnitOfWork unitOfWork,
+            ILogger<AuthorizationController> logger,
+            KadrovikContext dbContext,
+            ISignInStrategy signInStrategy)
         {
+            _unitOfWork = unitOfWork;
+            _failedLoginAttemptRepository = failedLoginAttemptRepository;
             _dbContext = dbContext;
             _logger = logger;
+            _signInStrategy = signInStrategy;
         }
         public IActionResult Index()
         {
             return View();
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            var user = _dbContext.UsersSites.FirstOrDefault(u => u.Login == username);
+            var user = await _unitOfWork.UserRepository.FindUserAsync(username, password);
 
-            if (user != null && user.Password == password)
+            if (user != null)
             {
-                _logger.LogInformation($"Пользователь {username} успешно вошел в систему.");
+                _logger.LogInformation($"User {username} successfully logged in.");
 
-                var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, username),
-            // ... добавьте другие требуемые утверждения
-        };
+                await _signInStrategy.SignInAsync(HttpContext, username);
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var authProperties = new AuthenticationProperties
-                {
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30), // Время истечения срока действия аутентификации
-                    IsPersistent = false, // Указывает, будет ли аутентификация сохраняться после закрытия браузера
-                    RedirectUri = "/Home/Index",
-                };
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                _failedLoginAttemptRepository.ResetFailedLoginAttempts(username);
 
                 return Json(new { success = true });
             }
+            else
+            {
+                _failedLoginAttemptRepository.IncrementFailedLoginAttempts(username);
 
-            // Если авторизация не удалась, возвращаем сообщение об ошибке
-            return Json(new { success = false, errorMessage = "Неверный логин или пароль" });
+                if (_failedLoginAttemptRepository.IsAccountLocked(username))
+                {
+                    return Json(new { success = false, errorMessage = "Account is locked due to multiple unsuccessful login attempts. Please try again later." });
+                }
+
+                return Json(new { success = false, errorMessage = "Incorrect username or password" });
+            }
         }
 
 

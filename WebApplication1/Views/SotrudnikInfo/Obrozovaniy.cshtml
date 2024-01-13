@@ -1,0 +1,560 @@
+﻿
+
+@{
+    ViewData["Title"] = "Информация о сотрудниках";
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<style>
+    h2 {
+        font: #ffff
+    }
+    #sotrudnikForm, #changeForm, #actionForm {
+        display: inline-block;
+        vertical-align: top;
+        width: 30%;
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #282828;
+        border-radius: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        margin-right: 20px;
+        box-sizing: border-box;
+        background-color: #282828; /* Черный цвет фона */
+    }
+
+    #sotrudnikForm, #changeForm, #actionForm,
+    label, input, select, button {
+        color: #fff;
+    }
+
+        #sotrudnikForm:hover, #changeForm:hover, #actionForm:hover {
+            transform: scale(1.05);
+        }
+
+        #sotrudnikForm div, #changeForm div, #actionForm div {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input {
+        font-size: 18px;
+        padding: 10px;
+        display: block;
+        width: 100%;
+        border: 1px solid dodgerblue;
+        background-color: transparent;
+        color: #fff;
+        transition: all 0.5s;
+        outline: none;
+        transform-origin: bottom left;
+        position: relative;
+        z-index: 1;
+    }
+
+        input:hover {
+            border-color: lightblue;
+            color: lightblue;
+        }
+
+        input:focus {
+            border-color: limegreen;
+            background-color: rgba(0, 128, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+    .bar {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+        .bar:before, .bar:after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 0;
+            bottom: 0;
+            background: limegreen;
+            transition: width 0.5s, background 0.5s;
+        }
+
+    input:focus + .bar:before,
+    input:focus + .bar:after {
+        width: 50%;
+        background: limegreen;
+    }
+
+    input:not(:placeholder-shown) + .bar:before,
+    input:not(:placeholder-shown) + .bar:after {
+        width: 50%;
+        background: lightblue;
+    }
+
+    .floating-label {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        pointer-events: none;
+        transition: transform 0.5s, color 0.5s;
+    }
+
+    input:focus + .bar .floating-label,
+    input:not(:placeholder-shown) + .bar .floating-label {
+        transform: translateY(-20px) scale(0.8);
+        color: limegreen;
+    }
+
+    button {
+        background-color: dodgerblue;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        padding: 12px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        button:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        button:hover {
+            background-color: #0066cc;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-image: url('/images/123.jpg');
+        background-size: cover;
+        background-position: center;
+        margin: 20px;
+    }
+
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-color: #fafafa;
+        margin: 20px;
+    }
+
+    .mdl-textfield {
+        width: 100%;
+    }
+
+    div {
+        margin-bottom: 20px;
+    }
+
+    button {
+        margin-top: 20px;
+        margin-right: 20px;
+    }
+
+    .panels-container {
+        margin: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+        border-radius: 40px;
+        background-color: #282828; /* Добавляем прозрачность таблице */
+    }
+
+    th, td {
+        border: 1px solid #e0e0e0;
+        text-align: left;
+        padding: 16px;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Добавлено изменение цвета текста */
+        background-color: transparent; /* Добавляем прозрачность ячейкам */
+    }
+
+    th {
+        background-color: #f5f5f5;
+        color: #333;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    td {
+        color: #fff; /* Белый цвет текста внутри ячейки */
+    }
+
+    tr {
+        position: relative;
+        transition: box-shadow 0.3s ease-in-out; /* Добавлено изменение тени при наведении на строку */
+    }
+
+    tbody tr:hover {
+        background-color: #f9f9f9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Добавлено применение тени при наведении на строку */
+    }
+
+        tbody tr:hover td {
+            background-color: transparent;
+            color: #000; /* Черный цвет текста при наведении */
+        }
+      
+    img {
+        max-width: 50px;
+        max-height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+    thead tr:hover {
+        background-color: transparent;
+    }
+
+    tbody tr:hover img {
+        transform: scale(1.1);
+    }
+
+    .btn-link {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #ffffff;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin: 10px 10px 10px 10px; /* Отступ между кнопками (сверху, справа, снизу, слева) */
+    }
+
+    .buttons-container {
+        margin-top: 20px; /* Отступ сверху для контейнера кнопок (по желанию) */
+    }
+
+    .btn-link:hover {
+        background-color: #0056b3; /* Цвет фона кнопки при наведении */
+        color: #ffffff; /* Цвет текста кнопки при наведении */
+    }
+</style>
+<h2 style="color: white;">Сотрудник: @Model.LastName @Model.FirstName @Model.Patranomic</h2>
+@model WebApplication1.Models.SotrudnikViewModel
+<table id="obrazovanieTable">
+    <thead>
+        <tr>
+            <th style="display: none;">ID</th>
+            <th>Образование</th>
+            <th>Название учреждения</th>
+            <th>Квалификация по образованию</th>
+            <th>Название учреждения 2</th>
+            <th>Квалификация по образованию 2</th>
+            <th>Послевузовое образование</th>
+            <th>Профессия основная</th>
+            <th>Профессия дополнительная</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obrazovanie in Model.ObrazovanieList)
+        {
+            <tr>
+                <td style="display: none;">@obrazovanie.Id</td>
+                <td>@obrazovanie.Obrazovanie1</td>
+                <td>@obrazovanie.Nazvanieuchrejdeniya</td>
+                <td>@obrazovanie.KvalifikachiyapoObrazovaniyu</td>
+                <td>@obrazovanie.Nazvanieuchrejdeniya2</td>
+                <td>@obrazovanie.KvalifikachiyapoObrazovaniyu2</td>
+                <td>@obrazovanie.Poslevuzovoe</td>
+                <td>@obrazovanie.ProfessiaOsnova</td>
+                <td>@obrazovanie.ProfessiaDopolnitel</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form id="sotrudnikForm" data-form-type="sotrudnik" class="animated">
+    <label for="formTitle">Добавление записи:</label>
+    <div>
+        <label for="obrazovanie1">Образование:</label>
+        <input type="text" id="obrazovanie1" name="obrazovanie1" placeholder="Введите образование">
+    </div>
+
+    <div>
+        <label for="nazvanieUchrezhdeniya">Название учреждения:</label>
+        <input type="text" id="nazvanieUchrezhdeniya" name="nazvanieUchrezhdeniya" placeholder="Введите название учреждения">
+    </div>
+
+    <div>
+        <label for="kvalifikaciya">Квалификация:</label>
+        <input type="text" id="kvalifikaciya" name="kvalifikaciya" placeholder="Введите квалификацию">
+    </div>
+
+    <div>
+        <label for="nazvanieUchrezhdeniya2">Название учреждения (Второе образование):</label>
+        <input type="text" id="nazvanieUchrezhdeniya2" name="nazvanieUchrezhdeniya2" placeholder="Введите название учреждения">
+    </div>
+
+    <div>
+        <label for="kvalifikaciya2">Квалификация (Второе образование):</label>
+        <input type="text" id="kvalifikaciya2" name="kvalifikaciya2" placeholder="Введите квалификацию">
+    </div>
+
+    <div>
+        <label for="poslevuzovoe">Послевузовское:</label>
+        <input type="text" id="poslevuzovoe" name="poslevuzovoe" placeholder="Введите послевузоское образование">
+    </div>
+
+    <div>
+        <label for="professiaOsnova">Профессия:</label>
+        <input type="text" id="professiaOsnova" name="professiaOsnova" placeholder="Введите профессию">
+    </div>
+
+    <div>
+        <label for="professiaDopolnitel">Профессия (дополнительное):</label>
+        <input type="text" id="professiaDopolnitel" name="professiaDopolnitel" placeholder="Введите профессию (дополнительную)">
+    </div>
+    <button type="button" onclick="addSotrudnik()">Добавить информацию</button>
+</form>
+<form id="sotrudnikForm" data-form-type="sotrudnik" class="animated">
+    <label for="NameForm">Изменение записи:</label>
+    <div style="display: none;">
+        <label for="Lastname">ID:</label>
+        <input type="text" id="ID" name="Lastname" placeholder="ID">
+    </div>
+    <div>
+        <label for="Lastname">Оброзование:</label>
+        <input type="text" id="Lastname" name="Lastname" placeholder="Введите оброзование">
+    </div>
+
+    <div>
+        <label for="Firstname">Название учереждения:</label>
+        <input type="text" id="Firstname" name="Firstname" placeholder="Введите название учереждение">
+    </div>
+
+    <div>
+        <label for="Patranomic">Квалификация:</label>
+        <input type="text" id="Patranomic" name="Patranomic" placeholder="Введите квалификацию">
+    </div>
+
+    <div>
+        <label for="Adress">Название учереждения(Второе оброзование):</label>
+        <input type="text" id="Adress" name="Adress" placeholder="Введите название учереждения">
+    </div>
+
+    <div>
+        <label for="MestoRojd">Квалификация(Второе оброзование):</label>
+        <input type="text" id="MestoRojd" name="MestoRojd" placeholder="Введите квалификацию">
+    </div>
+
+    <div>
+        <label for="Datarojdeniy">Послевузовское:</label>
+        <input type="date" id="Datarojdeniy" name="Datarojdeniy" placeholder="Введите послевузоское оброзование">
+    </div>
+
+    <div>
+        <label for="InYz">Профессия:</label>
+        <input type="text" id="InYz" name="InYz" placeholder="Введите проффесию">
+    </div>
+
+    <div>
+        <label for="Brak">Профессия(дополнительное):</label>
+        <input type="text" id="Brak" name="Brak" placeholder="Введите Профессию(дополнительную)">
+    </div>
+    <button type="button" onclick="updateObrazovanie()">Изменить информацию</button>
+</form>
+<form id="actionForm" class="animated">
+    <label for="NameForm">Дейсвтия:</label>
+    <div class="buttons-container">
+        <a class="btn-link" href="/SotrudnikInfo/Index">Вернуться обратно</a>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function addSotrudnik() {
+        // Получаем значения полей формы
+        var obrazovanie1Element = document.getElementById('obrazovanie1');
+        var nazvanieUchrezhdeniyaElement = document.getElementById('nazvanieUchrezhdeniya');
+        var kvalifikaciyaElement = document.getElementById('kvalifikaciya');
+        var nazvanieUchrezhdeniya2Element = document.getElementById('nazvanieUchrezhdeniya2');
+        var kvalifikaciya2Element = document.getElementById('kvalifikaciya2');
+        var poslevuzovoeElement = document.getElementById('poslevuzovoe');
+        var professiaOsnovaElement = document.getElementById('professiaOsnova');
+        var professiaDopolnitelElement = document.getElementById('professiaDopolnitel');
+
+        // Проверка на заполненность полей
+        if (!obrazovanie1Element.value || !nazvanieUchrezhdeniyaElement.value || !kvalifikaciyaElement.value ||
+            !nazvanieUchrezhdeniya2Element.value || !kvalifikaciya2Element.value ||
+            !poslevuzovoeElement.value || !professiaOsnovaElement.value || !professiaDopolnitelElement.value) {
+
+            // Показываем уведомление об ошибке
+            Swal.fire({
+                icon: 'error',
+                title: 'Ошибка',
+                text: 'Пожалуйста, заполните все обязательные поля!'
+            });
+
+            return; // Останавливаем выполнение функции, так как не все поля заполнены
+        }
+
+        // Собираем данные из формы
+        var formData = {
+            Obrazovanie1: obrazovanie1Element.value,
+            Nazvanieuchrejdeniya: nazvanieUchrezhdeniyaElement.value,
+            KvalifikachiyapoObrazovaniyu: kvalifikaciyaElement.value,
+            Nazvanieuchrejdeniya2: nazvanieUchrezhdeniya2Element.value,
+            KvalifikachiyapoObrazovaniyu2: kvalifikaciya2Element.value,
+            Poslevuzovoe: poslevuzovoeElement.value,
+            ProfessiaOsnova: professiaOsnovaElement.value,
+            ProfessiaDopolnitel: professiaDopolnitelElement.value
+        };
+
+        // Отправляем данные на сервер
+        $.ajax({
+            url: '/api/AddObrozovaniySotrudnik', // Укажите правильный URL для вашего сервера
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                // Обработка успешного ответа от сервера
+                console.log(response);
+
+                // Очищаем поля формы
+                document.getElementById('sotrudnikForm').reset();
+
+                // Обновляем страницу
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Успех',
+                        text: 'Запись успешно создана!',
+                        timer: 2000
+                    }).then(() => {
+                        location.reload(); // Обновляем страницу после успешного выполнения
+                    });
+                }
+            },
+            error: function (error) {
+                // Обработка ошибки
+                console.log(error);
+            }
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Обработчик события щелчка по таблице
+        $('#obrazovanieTable tbody tr').on('click', function () {
+            // Получаем значение ID из ячейки таблицы
+            var idValue = $(this).find('td:first-child').text();
+
+            // Устанавливаем значение в текстовый ввод
+            $('#ID').val(idValue);
+        });
+    });
+</script>
+<script>
+    function updateObrazovanie() {
+        var idElement = document.getElementById('ID');
+        var obrazovanie1Element = document.getElementById('Lastname');
+        var nazvanieuchrejdeniyaElement = document.getElementById('Firstname');
+        var kvalifikachiyapoObrazovaniyuElement = document.getElementById('Patranomic');
+        var nazvanieuchrejdeniya2Element = document.getElementById('Adress');
+        var kvalifikachiyapoObrazovaniyu2Element = document.getElementById('MestoRojd');
+        var poslevuzovoeElement = document.getElementById('Datarojdeniy');
+        var professiaOsnovaElement = document.getElementById('InYz');
+        var professiaDopolnitelElement = document.getElementById('Brak');
+
+        // Проверка на заполненность полей
+        if (!idElement.value || !obrazovanie1Element.value || !nazvanieuchrejdeniyaElement.value ||
+            !kvalifikachiyapoObrazovaniyuElement.value || !nazvanieuchrejdeniya2Element.value ||
+            !kvalifikachiyapoObrazovaniyu2Element.value || !poslevuzovoeElement.value ||
+            !professiaOsnovaElement.value || !professiaDopolnitelElement.value) {
+
+            // Показываем уведомление об ошибке
+            Swal.fire({
+                icon: 'error',
+                title: 'Ошибка',
+                text: 'Пожалуйста, заполните все обязательные поля!'
+            });
+
+            return; // Останавливаем выполнение функции, так как не все поля заполнены
+        }
+
+        var formData = {
+            Id: idElement.value,
+            Obrazovanie1: obrazovanie1Element.value,
+            Nazvanieuchrejdeniya: nazvanieuchrejdeniyaElement.value,
+            KvalifikachiyapoObrazovaniyu: kvalifikachiyapoObrazovaniyuElement.value,
+            Nazvanieuchrejdeniya2: nazvanieuchrejdeniya2Element.value,
+            KvalifikachiyapoObrazovaniyu2: kvalifikachiyapoObrazovaniyu2Element.value,
+            Poslevuzovoe: poslevuzovoeElement.value,
+            ProfessiaOsnova: professiaOsnovaElement.value,
+            ProfessiaDopolnitel: professiaDopolnitelElement.value
+        };
+
+        $.ajax({
+            url: '/api/UpdateObrazovanie',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                // Обработка успешного ответа от сервера
+                console.log(response);
+
+                // Показываем уведомление об успешном изменении
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Успех',
+                        text: 'Информация об образовании успешно изменена!',
+                        timer: 2000
+                    }).then(() => {
+                        location.reload(); // Обновляем страницу после успешного выполнения
+                    });
+                }
+            },
+            error: function (error) {
+                // Обработка ошибки
+                console.log(error);
+            }
+        });
+    }
+</script>
+
+

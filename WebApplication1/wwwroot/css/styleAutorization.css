@@ -1,0 +1,231 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Helvetica;
+    background-image: url('/images/2780481.jpg');
+    background-size: cover;
+    background-position: center;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+}
+
+
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Установка z-index ниже нуля помещает частицы за контентом */
+}
+
+.login-form {
+    position: relative;
+    z-index: 1;
+    max-width: 720px; /* Максимальная ширина формы */
+    margin: 50px auto; /* Центрирование формы на странице */
+    padding: 40px; /* Внутренний отступ формы */
+    background: #000; /* Черный цвет формы без прозрачности */
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    opacity: 0; /* Начальная непрозрачность */
+    transform: translateX(-20px); /* Начальное смещение влево */
+    text-align: center;
+    transition: opacity 1.5s ease-out, transform 1.5s ease-out; /* Переход для плавного появления и покачивания */
+}
+
+    /* При добавлении класса "show", элемент становится видимым и смещается вправо */
+    .login-form.show {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+hgroup {
+    text-align: center;
+    margin-top: 4em;
+}
+
+
+h1 {
+    font-weight: bold; /* Жирный шрифт */
+    margin-right: 10px; /* Расстояние между h1 и изображением */
+    color: purple; /* Начальный цвет текста */
+    transition: color 0.5s ease-in-out; /* CSS-переход для изменения цвета текста */
+}
+
+h3 {
+    margin-right: 10px; /* Расстояние между h1 и изображением */
+    color: silver; /* Начальный цвет текста */
+    transition: color 0.5s ease-in-out;
+}
+
+
+.fade-in-text h1,
+.fade-in-text h3 {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+form {
+    width: 720px;
+    margin: 4em auto;
+    padding: 3em 2em 2em 2em;
+    border-radius: 40px;
+    box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 1px 0px, rgba(0, 0, 0, 0.09804) 0px 1px 2px 0px;
+}
+
+
+input {
+    font-size: 18px;
+    padding: 10px;
+    display: block;
+    width: 100%;
+    border: 1px solid dodgerblue;
+    background-color: transparent;
+    color: #fff;
+    transition: all 0.5s;
+    outline: none;
+    transform-origin: bottom left;
+    position: relative;
+    z-index: 1;
+}
+
+.group {
+    position: relative;
+    margin-bottom: 45px;
+}
+
+input:hover {
+    border-color: lightblue;
+    color: lightblue;
+}
+
+input:focus {
+    border-color: limegreen;
+    background-color: rgba(0, 128, 0, 0.2);
+    transform: scale(1.05);
+}
+
+.bar {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+    .bar:before, .bar:after {
+        content: '';
+        position: absolute;
+        height: 2px;
+        width: 0;
+        bottom: 0;
+        background: limegreen;
+        transition: width 0.5s, background 0.5s;
+    }
+
+input:focus + .bar:before,
+input:focus + .bar:after {
+    width: 50%;
+    background: limegreen; /* Изменение цвета подчеркивания при фокусировке */
+}
+
+input:not(:placeholder-shown) + .bar:before,
+input:not(:placeholder-shown) + .bar:after {
+    width: 50%;
+    background: lightblue; /* Изменение цвета подчеркивания при вводе данных */
+}
+
+.floating-label {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    pointer-events: none;
+    transition: transform 0.5s, color 0.5s;
+}
+
+input:focus + .bar .floating-label,
+input:not(:placeholder-shown) + .bar .floating-label {
+    transform: translateY(-20px) scale(0.8);
+    color: limegreen; /* Изменение цвета подсказки при фокусировке и вводе данных */
+}
+
+.button {
+    font-size: 18px;
+    padding: 15px 120px; /* Увеличил размер для увеличения длины */
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.5s;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    background-color: dodgerblue; /* Цвет кнопки */
+    text-align: center; /* Выравнивание текста по центру */
+    text-decoration: none; /* Убираем подчеркивание по умолчанию */
+}
+
+    .button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(30, 144, 255, 0.8);
+    }
+
+    .button:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(30, 144, 255, 0.8);
+        transition: width 0.5s;
+        z-index: -1;
+    }
+
+    .button:hover:after {
+        width: 100%;
+    }
+
+
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Затемненный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#loading-spinner {
+    width: 40px;
+    height: 40px;
+}
+
+img {
+    max-width: 100px; /* Максимальная ширина изображения */
+    height: auto;
+    h1, h3
+
+{
+    font-weight: 300;
+}
+
+footer a:hover {
+    color: #666;
+    text-decoration: underline;
+}
+
+footer img {
+    width: 80px;
+    transition: all .2s ease;
+}
+
+    footer img:hover {
+        opacity: .83;
+    }

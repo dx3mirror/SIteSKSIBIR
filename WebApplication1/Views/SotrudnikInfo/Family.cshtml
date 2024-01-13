@@ -1,0 +1,473 @@
+﻿<style>
+    h2 {
+        font: #ffff
+    }
+
+    #sotrudnikForm, #changeForm, #actionForm {
+        display: inline-block;
+        vertical-align: top;
+        width: 30%;
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #282828;
+        border-radius: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        margin-right: 20px;
+        box-sizing: border-box;
+        background-color: #282828; /* Черный цвет фона */
+    }
+
+    #sotrudnikForm, #changeForm, #actionForm,
+    label, input, select, button {
+        color: #fff;
+    }
+
+        #sotrudnikForm:hover, #changeForm:hover, #actionForm:hover {
+            transform: scale(1.05);
+        }
+
+        #sotrudnikForm div, #changeForm div, #actionForm div {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input {
+        font-size: 18px;
+        padding: 10px;
+        display: block;
+        width: 100%;
+        border: 1px solid dodgerblue;
+        background-color: transparent;
+        color: #fff;
+        transition: all 0.5s;
+        outline: none;
+        transform-origin: bottom left;
+        position: relative;
+        z-index: 1;
+    }
+
+        input:hover {
+            border-color: lightblue;
+            color: lightblue;
+        }
+
+        input:focus {
+            border-color: limegreen;
+            background-color: rgba(0, 128, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+    .bar {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+        .bar:before, .bar:after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 0;
+            bottom: 0;
+            background: limegreen;
+            transition: width 0.5s, background 0.5s;
+        }
+
+    input:focus + .bar:before,
+    input:focus + .bar:after {
+        width: 50%;
+        background: limegreen;
+    }
+
+    input:not(:placeholder-shown) + .bar:before,
+    input:not(:placeholder-shown) + .bar:after {
+        width: 50%;
+        background: lightblue;
+    }
+
+    .floating-label {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        pointer-events: none;
+        transition: transform 0.5s, color 0.5s;
+    }
+
+    input:focus + .bar .floating-label,
+    input:not(:placeholder-shown) + .bar .floating-label {
+        transform: translateY(-20px) scale(0.8);
+        color: limegreen;
+    }
+
+    button {
+        background-color: dodgerblue;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        padding: 12px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        button:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        button:hover {
+            background-color: #0066cc;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-image: url('/images/123.jpg');
+        background-size: cover;
+        background-position: center;
+        margin: 20px;
+    }
+
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-color: #fafafa;
+        margin: 20px;
+    }
+
+    .mdl-textfield {
+        width: 100%;
+    }
+
+    div {
+        margin-bottom: 20px;
+    }
+
+    button {
+        margin-top: 20px;
+        margin-right: 20px;
+    }
+
+    .panels-container {
+        margin: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+        border-radius: 40px;
+        background-color: #282828; /* Добавляем прозрачность таблице */
+    }
+
+    th, td {
+        border: 1px solid #e0e0e0;
+        text-align: left;
+        padding: 16px;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Добавлено изменение цвета текста */
+        background-color: transparent; /* Добавляем прозрачность ячейкам */
+    }
+
+    th {
+        background-color: #f5f5f5;
+        color: #333;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    td {
+        color: #fff; /* Белый цвет текста внутри ячейки */
+    }
+
+    tr {
+        position: relative;
+        transition: box-shadow 0.3s ease-in-out; /* Добавлено изменение тени при наведении на строку */
+    }
+
+    tbody tr:hover {
+        background-color: #f9f9f9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Добавлено применение тени при наведении на строку */
+    }
+
+        tbody tr:hover td {
+            background-color: transparent;
+            color: #000; /* Черный цвет текста при наведении */
+        }
+
+    img {
+        max-width: 50px;
+        max-height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+    thead tr:hover {
+        background-color: transparent;
+    }
+
+    tbody tr:hover img {
+        transform: scale(1.1);
+    }
+
+    .btn-link {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #ffffff;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin: 10px 10px 10px 10px; /* Отступ между кнопками (сверху, справа, снизу, слева) */
+    }
+
+    .buttons-container {
+        margin-top: 20px; /* Отступ сверху для контейнера кнопок (по желанию) */
+    }
+
+    .btn-link:hover {
+        background-color: #0056b3; /* Цвет фона кнопки при наведении */
+        color: #ffffff; /* Цвет текста кнопки при наведении */
+    }
+</style>
+@model WebApplication1.Models.FamilyViwModel
+@{
+    ViewData["Title"] = "Family";
+}
+
+<h2 style="color: white;">Сотрудник: @Model.LastName @Model.FirstName @Model.Patranomic</h2>
+
+<table id="obrazovanieTable">
+    <thead>
+        <tr>
+            <th style="display: none;">ID</th>
+            <th>ФИО</th>
+            <th>Степень родства</th>
+            <th>Дата рождения</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var familyMember in Model.FamilyeList)
+        {
+            <tr>
+                <td style="display: none;">@familyMember.Id</td>
+                <td>@familyMember.Fio</td>
+                <td>@familyMember.StepenRodstva</td>
+                <td>@familyMember.DataRojdeniya</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form id="sotrudnikForm" data-form-type="sotrudnik" class="animated" onsubmit="addFamilyMember(); return false;">
+    <label for="formTitle">Добавление записи:</label>
+    <div>
+        <label for="FiO">ФИО родственника:</label>
+        <input type="text" id="FiO" name="FiO" placeholder="Введите ФИО родственника" required>
+    </div>
+
+    <div>
+        <label for="steoenRodstva">Степень родства:</label>
+        <input type="text" id="steoenRodstva" name="steoenRodstva" placeholder="Введите степень родства" required>
+    </div>
+
+    <div>
+        <label for="datarojd">Дата рождения:</label>
+        <input type="date" id="datarojd" name="datarojd" placeholder="Введите дату рождения" required>
+    </div>
+
+    <button type="button" onclick="addFamilyMember()">Добавить информацию</button>
+</form>
+<form id="sotrudnikForm" data-form-type="sotrudnik" class="animated" onsubmit="updateFamilyMember(); return false;">
+    <label for="formTitle">Обновление записи:</label>
+    <div style="display: none;">
+        <label for="ID">ID:</label>
+        <input type="number" id="Update_ID" name="ID" placeholder="Введите ID">
+    </div>
+    <div>
+        <label for="FiO">ФИО родственника:</label>
+        <input type="text" id="Update_FiO" name="FiO" placeholder="Введите ФИО родственника" required>
+    </div>
+
+    <div>
+        <label for="steoenRodstva">Степень родства:</label>
+        <input type="text" id="Update_steoenRodstva" name="steoenRodstva" placeholder="Введите степень родства" required>
+    </div>
+
+    <div>
+        <label for="datarojd">Дата рождения:</label>
+        <input type="date" id="Update_datarojd" name="datarojd" placeholder="Введите дату рождения" required>
+    </div>
+
+    <button type="submit" onclick="updateFamilyMember()">Обновить информацию</button>
+</form>
+<form id="actionForm" class="animated">
+    <label for="NameForm">Дейсвтия:</label>
+    <div class="buttons-container">
+        <a class="btn-link" href="/SotrudnikInfo/Index">Вернуться обратно</a>
+    </div>
+</form>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Обработчик события щелчка по таблице
+        $('#obrazovanieTable tbody tr').on('click', function () {
+            // Получаем значение ID из ячейки таблицы
+            var idValue = $(this).find('td:first-child').text();
+
+            // Устанавливаем значение в текстовый ввод
+            $('#Update_ID').val(idValue);
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function updateFamilyMember() {
+        var idElement = document.getElementById('Update_ID');
+        var fiOElement = document.getElementById('Update_FiO');
+        var steoenRodstvaElement = document.getElementById('Update_steoenRodstva');
+        var datarojdElement = document.getElementById('Update_datarojd');
+
+        // Check if any of the required fields are empty
+        if (!idElement.value || !fiOElement.value || !steoenRodstvaElement.value || !datarojdElement.value) {
+            // Display an error message with SweetAlert
+            Swal.fire({
+                icon: 'error',
+                title: 'Ошибка',
+                text: 'Пожалуйста, заполните все обязательные поля!',
+                timer: 2000
+            });
+            return; // Stop further execution if validation fails
+        }
+
+        var formData = {
+            Id: parseInt(idElement.value),
+            Fio: fiOElement.value,
+            StepenRodstva: steoenRodstvaElement.value,
+            DataRojdeniya: datarojdElement.value
+        };
+
+        $.ajax({
+            url: '/api/UpdateFamily',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                // Обработка успешного ответа от сервера
+                console.log(response);
+
+                // Показываем красивое уведомление с SweetAlert
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Успех',
+                        text: 'Запись успешно обновлена!',
+                        timer: 2000
+                    }).then(() => {
+                        // Обновляем страницу после закрытия уведомления
+                        location.reload();
+                    });
+                }
+            },
+            error: function (error) {
+                // Обработка ошибки
+                console.log(error);
+            }
+        });
+    }
+</script>
+
+
+<script>
+    function addFamilyMember() {
+        var fiOElement = document.getElementById('FiO');
+        var steoenRodstvaElement = document.getElementById('steoenRodstva');
+        var datarojdElement = document.getElementById('datarojd');
+
+        // Проверяем, что все поля заполнены
+        if (fiOElement.value && steoenRodstvaElement.value && datarojdElement.value) {
+            var formData = {
+                Fio: fiOElement.value,
+                StepenRodstva: steoenRodstvaElement.value,
+                DataRojdeniya: datarojdElement.value
+            };
+
+            // Отправляем данные на сервер
+            $.ajax({
+                url: '/api/AddFamilyMember',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    // Обработка успешного ответа от сервера
+                    console.log(response);
+
+                    // Показываем уведомление об успешном добавлении
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Успех',
+                            text: 'Информация о родственнике успешно добавлена!',
+                            timer: 2000
+                        }).then(() => {
+                            // Обновляем страницу после закрытия уведомления
+                            location.reload();
+                        });
+                    }
+                },
+                error: function (error) {
+                    // Обработка ошибки
+                    console.log(error);
+                }
+            });
+        } else {
+            // Если хотя бы одно поле не заполнено, показываем уведомление
+            Swal.fire({
+                icon: 'error',
+                title: 'Ошибка',
+                text: 'Пожалуйста, заполните все поля',
+                timer: 2000
+            });
+        }
+    }
+</script>

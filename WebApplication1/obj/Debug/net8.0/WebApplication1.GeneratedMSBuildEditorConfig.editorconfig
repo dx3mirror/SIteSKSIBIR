@@ -38,8 +38,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/danil/source/repos/WebApplication1/WebApplication1/Views/SotrudnikInfo/Doljnost.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU290cnVkbmlrSW5mb1xEb2xqbm9zdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/danil/source/repos/WebApplication1/WebApplication1/Views/SotrudnikInfo/Family.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU290cnVkbmlrSW5mb1xGYW1pbHkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/danil/source/repos/WebApplication1/WebApplication1/Views/SotrudnikInfo/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU290cnVkbmlrSW5mb1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/danil/source/repos/WebApplication1/WebApplication1/Views/SotrudnikInfo/Obrozovaniy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU290cnVkbmlrSW5mb1xPYnJvem92YW5peS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/danil/source/repos/WebApplication1/WebApplication1/Views/SotrudnikInfo/Otpusk.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU290cnVkbmlrSW5mb1xPdHB1c2suY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/danil/source/repos/WebApplication1/WebApplication1/Views/SotrudnikInfo/Passport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU290cnVkbmlrSW5mb1xQYXNzcG9ydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/danil/source/repos/WebApplication1/WebApplication1/Views/Sotrudnik/Index.cshtml]

@@ -1,0 +1,479 @@
+﻿<style>
+    h2 {
+        font: #ffff
+    }
+
+    #doljnostForm, #changeForm, #actionForm {
+        display: inline-block;
+        vertical-align: top;
+        width: 30%;
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #282828;
+        border-radius: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        margin-right: 20px;
+        box-sizing: border-box;
+        background-color: #282828; /* Черный цвет фона */
+    }
+
+    #doljnostForm, #changeForm, #actionForm,
+    label, input, select, button {
+        color: #fff;
+    }
+
+        #doljnostForm:hover, #changeForm:hover, #actionForm:hover {
+            transform: scale(1.05);
+        }
+
+        #doljnostForm div, #changeForm div, #actionForm div {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input {
+        font-size: 18px;
+        padding: 10px;
+        display: block;
+        width: 100%;
+        border: 1px solid dodgerblue;
+        background-color: transparent;
+        color: #fff;
+        transition: all 0.5s;
+        outline: none;
+        transform-origin: bottom left;
+        position: relative;
+        z-index: 1;
+    }
+
+        input:hover {
+            border-color: lightblue;
+            color: lightblue;
+        }
+
+        input:focus {
+            border-color: limegreen;
+            background-color: rgba(0, 128, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+    .bar {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+        .bar:before, .bar:after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 0;
+            bottom: 0;
+            background: limegreen;
+            transition: width 0.5s, background 0.5s;
+        }
+
+    input:focus + .bar:before,
+    input:focus + .bar:after {
+        width: 50%;
+        background: limegreen;
+    }
+
+    input:not(:placeholder-shown) + .bar:before,
+    input:not(:placeholder-shown) + .bar:after {
+        width: 50%;
+        background: lightblue;
+    }
+
+    .floating-label {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        pointer-events: none;
+        transition: transform 0.5s, color 0.5s;
+    }
+
+    input:focus + .bar .floating-label,
+    input:not(:placeholder-shown) + .bar .floating-label {
+        transform: translateY(-20px) scale(0.8);
+        color: limegreen;
+    }
+
+    button {
+        background-color: dodgerblue;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        padding: 12px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        button:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        button:hover {
+            background-color: #0066cc;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-image: url('/images/123.jpg');
+        background-size: cover;
+        background-position: center;
+        margin: 20px;
+    }
+
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-color: #fafafa;
+        margin: 20px;
+    }
+
+    .mdl-textfield {
+        width: 100%;
+    }
+
+    div {
+        margin-bottom: 20px;
+    }
+
+    button {
+        margin-top: 20px;
+        margin-right: 20px;
+    }
+
+    .panels-container {
+        margin: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+        border-radius: 40px;
+        background-color: #282828; /* Добавляем прозрачность таблице */
+    }
+
+    th, td {
+        border: 1px solid #e0e0e0;
+        text-align: left;
+        padding: 16px;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Добавлено изменение цвета текста */
+        background-color: transparent; /* Добавляем прозрачность ячейкам */
+    }
+
+    th {
+        background-color: #f5f5f5;
+        color: #333;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    td {
+        color: #fff; /* Белый цвет текста внутри ячейки */
+    }
+
+    tr {
+        position: relative;
+        transition: box-shadow 0.3s ease-in-out; /* Добавлено изменение тени при наведении на строку */
+    }
+
+    tbody tr:hover {
+        background-color: #f9f9f9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Добавлено применение тени при наведении на строку */
+    }
+
+        tbody tr:hover td {
+            background-color: transparent;
+            color: #000; /* Черный цвет текста при наведении */
+        }
+
+    img {
+        max-width: 50px;
+        max-height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+    thead tr:hover {
+        background-color: transparent;
+    }
+
+    tbody tr:hover img {
+        transform: scale(1.1);
+    }
+
+    .btn-link {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #ffffff;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin: 10px 10px 10px 10px; /* Отступ между кнопками (сверху, справа, снизу, слева) */
+    }
+
+    .buttons-container {
+        margin-top: 20px; /* Отступ сверху для контейнера кнопок (по желанию) */
+    }
+
+    .btn-link:hover {
+        background-color: #0056b3; /* Цвет фона кнопки при наведении */
+        color: #ffffff; /* Цвет текста кнопки при наведении */
+    }
+</style>
+@model WebApplication1.Models.DoljnostViewModel
+<h2 style="color: white;">Сотрудник: @Model.LastName @Model.FirstName @Model.Patranomic</h2>
+<table id="doljnostTable">
+    <thead>
+        <tr>
+            <th style="display: none;">ID</th>
+            <th>Наименование должности</th>
+            <th>С какого</th>
+            <th>По какое</th>
+            <th>Количество</th>
+            <th>Ответственный</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var doljnost in Model.DoljnostList)
+        {
+            <tr>
+                <td style="display: none;">@doljnost.Id</td>
+                <td>@doljnost.NaimenoviyDoljnosti</td>
+                <td>@doljnost.SKogo</td>
+                <td>@doljnost.PoKokoe</td>
+                <td>@doljnost.KolVo</td>
+                <td>@doljnost.Otvetstveniy</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form id="doljnostForm" data-form-type="doljnost" class="animated">
+    <label for="naimenovanieDoljnosti">Наименование должности:</label>
+    <input type="text" id="naimenovanieDoljnosti" name="naimenovanieDoljnosti" placeholder="Введите наименование должности" required>
+
+    <label for="sKakogo">С какого:</label>
+    <input type="date" id="sKakogo" name="sKakogo" placeholder="Введите дату начала" required>
+
+    <label for="poKakoe">По какое:</label>
+    <input type="date" id="poKakoe" name="poKakoe" placeholder="Введите дату окончания" required>
+
+    <label for="kolVo">Количество:</label>
+    <input type="text" id="kolVo" name="kolVo" placeholder="Введите количество" required>
+
+    <label for="otvetstveniy">Ответственный:</label>
+    <input type="text" id="otvetstveniy" name="otvetstveniy" placeholder="Введите ответственного" required>
+
+    <button type="button" onclick="addDoljnost()">Добавить информацию</button>
+</form>
+<form id="doljnostForm" data-form-type="doljnost" class="animated" onsubmit="updateDoljnost(); return false;">
+    <label for="formTitle">Обновление записи:</label>
+    <div style="display: none;">
+        <label for="ID">ID:</label>
+        <input type="number" id="Update_doljnost_ID" name="ID" placeholder="Введите ID" value="0">
+    </div>
+    <div>
+        <label for="naimenovanieDoljnosti">Наименование должности:</label>
+        <input type="text" id="Update_naimenovanieDoljnosti" name="naimenovanieDoljnosti" placeholder="Введите наименование должности" required>
+    </div>
+
+    <div>
+        <label for="sKakogo">С какого:</label>
+        <input type="date" id="Update_sKakogo" name="sKakogo" placeholder="Выберите дату начала" required>
+    </div>
+
+    <div>
+        <label for="poKakoe">По какое:</label>
+        <input type="date" id="Update_poKakoe" name="poKakoe" placeholder="Выберите дату окончания" required>
+    </div>
+
+    <div>
+        <label for="kolVo">Количество:</label>
+        <input type="text" id="Update_kolVo" name="kolVo" placeholder="Введите количество" required>
+    </div>
+
+    <div>
+        <label for="otvetstveniy">Ответственный:</label>
+        <input type="text" id="Update_otvetstveniy" name="otvetstveniy" placeholder="Введите ответственного" required>
+    </div>
+
+    <button type="submit">Обновить информацию</button>
+</form>
+<form id="actionForm" class="animated">
+    <label for="NameForm">Дейсвтия:</label>
+    <div class="buttons-container">
+        <a class="btn-link" href="/SotrudnikInfo/Index">Вернуться обратно</a>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        // Обработчик события щелчка по таблице
+        $('#doljnostTable tbody tr').on('click', function () {
+            // Получаем значение ID из ячейки таблицы
+            var idValue = $(this).find('td:first-child').text();
+
+            // Устанавливаем значение в текстовый ввод
+            $('#Update_doljnost_ID').val(idValue);
+        });
+    });
+</script>
+<script>
+    function updateDoljnost() {
+        var idElement = document.getElementById('Update_doljnost_ID');
+        var naimenovanieDoljnostiElement = document.getElementById('Update_naimenovanieDoljnosti');
+        var sKakogoElement = document.getElementById('Update_sKakogo');
+        var poKakoeElement = document.getElementById('Update_poKakoe');
+        var kolVoElement = document.getElementById('Update_kolVo');
+        var otvetstveniyElement = document.getElementById('Update_otvetstveniy');
+
+        var formData = {
+            Id: parseInt(idElement.value),
+            NaimenoviyDoljnosti: naimenovanieDoljnostiElement ? naimenovanieDoljnostiElement.value : null,
+            SKogo: sKakogoElement.value,
+            PoKokoe: poKakoeElement.value,
+            KolVo: kolVoElement.value,
+            Otvetstveniy: otvetstveniyElement.value
+        };
+
+        $.ajax({
+            url: '/api/UpdateDoljnost',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                console.log(response);
+
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Успех',
+                        timer: 2000,
+                        text: 'Информация о должности успешно обновлена!',
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка',
+                    timer: 2000,
+                    text: 'Произошла ошибка при обновлении информации о должности',
+                });
+            }
+        });
+    }
+</script>
+<script>
+    function addDoljnost() {
+        var naimenovanieDoljnostiElement = document.getElementById('naimenovanieDoljnosti');
+        var sKakogoElement = document.getElementById('sKakogo');
+        var poKakoeElement = document.getElementById('poKakoe');
+        var kolVoElement = document.getElementById('kolVo');
+        var otvetstveniyElement = document.getElementById('otvetstveniy');
+
+        if (!naimenovanieDoljnostiElement.value || !sKakogoElement.value ||
+            !poKakoeElement.value || !kolVoElement.value || !otvetstveniyElement.value) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Ошибка',
+                timer: 2000,
+                text: 'Пожалуйста, заполните все обязательные поля!'
+            });
+            return;
+        }
+
+        var formData = {
+            NaimenoviyDoljnosti: naimenovanieDoljnostiElement.value,
+            SKogo: sKakogoElement.value,
+            PoKokoe: poKakoeElement.value,
+            KolVo: kolVoElement.value,
+            Otvetstveniy: otvetstveniyElement.value
+        };
+
+        $.ajax({
+            url: '/api/AddDoljnost',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                console.log(response);
+
+                document.getElementById('doljnostForm').reset();
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Успех',
+                    timer: 2000,
+                    text: 'Информация о должности успешно добавлена!'
+                }).then(() => {
+                    location.reload();
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+
+                console.log(xhr.responseText);
+                console.log(status);
+                console.log(error);
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка',
+                    timer: 2000,
+                    text: 'Произошла ошибка при добавлении информации о должности'
+                });
+            }
+        });
+    }
+</script>

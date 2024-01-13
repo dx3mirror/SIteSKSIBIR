@@ -1,0 +1,526 @@
+﻿<style>
+    h2 {
+        font: #ffff
+    }
+
+    #sotrudnikForm, #changeForm, #actionForm {
+        display: inline-block;
+        vertical-align: top;
+        width: 30%;
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #282828;
+        border-radius: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        margin-right: 20px;
+        box-sizing: border-box;
+        background-color: #282828; /* Черный цвет фона */
+    }
+
+    #sotrudnikForm, #changeForm, #actionForm,
+    label, input, select, button {
+        color: #fff;
+    }
+
+        #sotrudnikForm:hover, #changeForm:hover, #actionForm:hover {
+            transform: scale(1.05);
+        }
+
+        #sotrudnikForm div, #changeForm div, #actionForm div {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input {
+        font-size: 18px;
+        padding: 10px;
+        display: block;
+        width: 100%;
+        border: 1px solid dodgerblue;
+        background-color: transparent;
+        color: #fff;
+        transition: all 0.5s;
+        outline: none;
+        transform-origin: bottom left;
+        position: relative;
+        z-index: 1;
+    }
+
+        input:hover {
+            border-color: lightblue;
+            color: lightblue;
+        }
+
+        input:focus {
+            border-color: limegreen;
+            background-color: rgba(0, 128, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+    .bar {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+        .bar:before, .bar:after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 0;
+            bottom: 0;
+            background: limegreen;
+            transition: width 0.5s, background 0.5s;
+        }
+
+    input:focus + .bar:before,
+    input:focus + .bar:after {
+        width: 50%;
+        background: limegreen;
+    }
+
+    input:not(:placeholder-shown) + .bar:before,
+    input:not(:placeholder-shown) + .bar:after {
+        width: 50%;
+        background: lightblue;
+    }
+
+    .floating-label {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        pointer-events: none;
+        transition: transform 0.5s, color 0.5s;
+    }
+
+    input:focus + .bar .floating-label,
+    input:not(:placeholder-shown) + .bar .floating-label {
+        transform: translateY(-20px) scale(0.8);
+        color: limegreen;
+    }
+
+    button {
+        background-color: dodgerblue;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        padding: 12px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        button:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        button:hover {
+            background-color: #0066cc;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-image: url('/images/123.jpg');
+        background-size: cover;
+        background-position: center;
+        margin: 20px;
+    }
+
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-color: #fafafa;
+        margin: 20px;
+    }
+
+    .mdl-textfield {
+        width: 100%;
+    }
+
+    div {
+        margin-bottom: 20px;
+    }
+
+    button {
+        margin-top: 20px;
+        margin-right: 20px;
+    }
+
+    .panels-container {
+        margin: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+        border-radius: 40px;
+        background-color: #282828; /* Добавляем прозрачность таблице */
+    }
+
+    th, td {
+        border: 1px solid #e0e0e0;
+        text-align: left;
+        padding: 16px;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Добавлено изменение цвета текста */
+        background-color: transparent; /* Добавляем прозрачность ячейкам */
+    }
+
+    th {
+        background-color: #f5f5f5;
+        color: #333;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    td {
+        color: #fff; /* Белый цвет текста внутри ячейки */
+    }
+
+    tr {
+        position: relative;
+        transition: box-shadow 0.3s ease-in-out; /* Добавлено изменение тени при наведении на строку */
+    }
+
+    tbody tr:hover {
+        background-color: #f9f9f9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Добавлено применение тени при наведении на строку */
+    }
+
+        tbody tr:hover td {
+            background-color: transparent;
+            color: #000; /* Черный цвет текста при наведении */
+        }
+
+    img {
+        max-width: 50px;
+        max-height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+    thead tr:hover {
+        background-color: transparent;
+    }
+
+    tbody tr:hover img {
+        transform: scale(1.1);
+    }
+
+    .btn-link {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #ffffff;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin: 10px 10px 10px 10px; /* Отступ между кнопками (сверху, справа, снизу, слева) */
+    }
+
+    .buttons-container {
+        margin-top: 20px; /* Отступ сверху для контейнера кнопок (по желанию) */
+    }
+
+    .btn-link:hover {
+        background-color: #0056b3; /* Цвет фона кнопки при наведении */
+        color: #ffffff; /* Цвет текста кнопки при наведении */
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+@model WebApplication1.Models.PassportViewModel
+<h2 style="color: white;">Сотрудник: @Model.LastName @Model.FirstName @Model.Patranomic</h2>
+<table id="passportTable">
+    <thead>
+        <tr>
+            <th style="display: none;">ID</th>
+            <th>Номер паспорта</th>
+            <th>Дата выдачи</th>
+            <th>Дата регистрации по месту</th>
+            <th>Выдан</th>
+            <th>Адрес регистрации по паспорту</th>
+            <th>Фактический адрес</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var passport in Model.PassporteList)
+        {
+            <tr>
+                <td style="display: none;">@passport.Id</td>
+                <td>@passport.NomerPasporta</td>
+                <td>@passport.Datavidachi</td>
+                <td>@passport.DataregistrachiiPoMestu</td>
+                <td>@passport.Vidan</td>
+                <td>@passport.AdressjitelstvaPopasportu</td>
+                <td>@passport.AressFakticheskiy</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="app">
+    <form id="sotrudnikForm" data-form-type="sotrudnik" v-on:submit.prevent="addPassport">
+        <label for="formTitle">Добавление записи:</label>
+
+        <div>
+            <label for="nomerPasporta">Номер паспорта:</label>
+            <input v-model="nomerPasporta" type="text" id="nomerPasporta" name="nomerPasporta" placeholder="Введите номер паспорта">
+        </div>
+
+        <div>
+            <label for="datavidachi">Дата выдачи:</label>
+            <input v-model="datavidachi" type="date" id="datavidachi" name="datavidachi">
+        </div>
+
+        <div>
+            <label for="dataregistrachiiPoMestu">Дата регистрации по месту:</label>
+            <input v-model="dataregistrachiiPoMestu" type="date" id="dataregistrachiiPoMestu" name="dataregistrachiiPoMestu">
+        </div>
+
+        <div>
+            <label for="vidan">Выдан:</label>
+            <input v-model="vidan" type="text" id="vidan" name="vidan" placeholder="Введите выдавшую организацию">
+        </div>
+
+        <div>
+            <label for="adressjitelstvaPopasportu">Адрес регистрации по паспорту:</label>
+            <input v-model="adressjitelstvaPopasportu" type="text" id="adressjitelstvaPopasportu" name="adressjitelstvaPopasportu" placeholder="Введите адрес регистрации">
+        </div>
+
+        <div>
+            <label for="aressFakticheskiy">Фактический адрес:</label>
+            <input v-model="aressFakticheskiy" type="text" id="aressFakticheskiy" name="aressFakticheskiy" placeholder="Введите фактический адрес">
+        </div>
+
+        <button type="submit">Добавить информацию</button>
+    </form>
+
+<form id="sotrudnikForm" data-form-type="sotrudnik" class="animated">
+    <label for="PassportId">Изменение записи:</label>
+    <div>
+        <label for="PassportId">ID:</label>
+        <input type="text" id="PassportId" name="PassportId" placeholder="ID">
+    </div>
+    <div>
+        <label for="NomerPasporta">Номер паспорта:</label>
+        <input type="text" id="NomerPasporta" name="NomerPasporta" placeholder="Введите номер паспорта">
+    </div>
+
+    <div>
+        <label for="Datavidachi">Дата выдачи:</label>
+        <input type="date" id="Datavidachi" name="Datavidachi" placeholder="Введите дату выдачи">
+    </div>
+
+    <div>
+        <label for="DataregistrachiiPoMestu">Дата регистрации по месту:</label>
+        <input type="date" id="DataregistrachiiPoMestu" name="DataregistrachiiPoMestu" placeholder="Введите дату регистрации по месту">
+    </div>
+
+    <div>
+        <label for="Vidan">Кем выдан:</label>
+        <input type="text" id="Vidan" name="Vidan" placeholder="Введите кем выдан">
+    </div>
+
+    <div>
+        <label for="AdressjitelstvaPopasportu">Адрес жительства по паспорту:</label>
+        <input type="text" id="AdressjitelstvaPopasportu" name="AdressjitelstvaPopasportu" placeholder="Введите адрес жительства по паспорту">
+    </div>
+
+    <div>
+        <label for="AressFakticheskiy">Фактический адрес:</label>
+        <input type="text" id="AressFakticheskiy" name="AressFakticheskiy" placeholder="Введите фактический адрес">
+    </div>
+
+    <button type="button" onclick="updatePassport()">Изменить информацию</button>
+</form>
+    <form id="actionForm" class="animated">
+        <label for="NameForm">Дейсвтия:</label>
+        <div class="buttons-container">
+            <a class="btn-link" href="/SotrudnikInfo/Index">Вернуться обратно</a>
+        </div>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function updatePassport() {
+        var passportIdElement = document.getElementById('PassportId');
+        var nomerPasportaElement = document.getElementById('NomerPasporta');
+        var datavidachiElement = document.getElementById('Datavidachi');
+        var dataregistrachiiPoMestuElement = document.getElementById('DataregistrachiiPoMestu');
+        var vidanElement = document.getElementById('Vidan');
+        var adressjitelstvaPopasportuElement = document.getElementById('AdressjitelstvaPopasportu');
+        var aressFakticheskiyElement = document.getElementById('AressFakticheskiy');
+
+        // Проверка на заполненность полей
+        if (!passportIdElement.value || !nomerPasportaElement.value || !datavidachiElement.value ||
+            !dataregistrachiiPoMestuElement.value || !vidanElement.value ||
+            !adressjitelstvaPopasportuElement.value || !aressFakticheskiyElement.value) {
+
+            // Показываем уведомление об ошибке
+            Swal.fire({
+                icon: 'error',
+                title: 'Ошибка',
+                text: 'Пожалуйста, заполните все обязательные поля!'
+            });
+
+            return; // Останавливаем выполнение функции, так как не все поля заполнены
+        }
+
+        var formData = {
+            Id: parseInt(passportIdElement.value),
+            NomerPasporta: nomerPasportaElement.value,
+            Datavidachi: datavidachiElement.value,
+            DataregistrachiiPoMestu: dataregistrachiiPoMestuElement.value,
+            Vidan: vidanElement.value,
+            AdressjitelstvaPopasportu: adressjitelstvaPopasportuElement.value,
+            AressFakticheskiy: aressFakticheskiyElement.value
+        };
+
+        $.ajax({
+            url: '/api/UpdatePassport',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                // Обработка успешного ответа от сервера
+                console.log(response);
+
+                // Показываем уведомление об успешном изменении
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Успех',
+                        text: 'Информация о паспорте успешно изменена!',
+                        timer: 2000
+                    }).then(() => {
+                        location.reload(); // Обновляем страницу после успешного выполнения
+                    });
+                }
+            },
+            error: function (error) {
+                // Обработка ошибки
+                console.log(error);
+            }
+        });
+    }
+</script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            nomerPasporta: '',
+            datavidachi: '',
+            dataregistrachiiPoMestu: '',
+            vidan: '',
+            adressjitelstvaPopasportu: '',
+            aressFakticheskiy: ''
+        },
+        methods: {
+            async addPassport() {
+                // Проверка на заполненность полей
+                if (!this.nomerPasporta || !this.datavidachi || !this.dataregistrachiiPoMestu ||
+                    !this.vidan || !this.adressjitelstvaPopasportu || !this.aressFakticheskiy) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ошибка',
+                        text: 'Пожалуйста, заполните все обязательные поля!'
+                    });
+                    return;
+                }
+
+                const data = {
+                    NomerPasporta: this.nomerPasporta,
+                    Datavidachi: this.datavidachi,
+                    DataregistrachiiPoMestu: this.dataregistrachiiPoMestu,
+                    Vidan: this.vidan,
+                    AdressjitelstvaPopasportu: this.adressjitelstvaPopasportu,
+                    AressFakticheskiy: this.aressFakticheskiy
+                };
+
+                try {
+                    const response = await fetch('/api/AddPassport', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log(result);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Успех',
+                            text: 'Запись успешно добавлена!',
+                            timer: 2000
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        console.error(`Ошибка HTTP: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Обработчик события щелчка по таблице
+        $('#passportTable tbody tr').on('click', function () {
+            // Получаем значение ID из ячейки таблицы
+            var idValue = $(this).find('td:first-child').text();
+
+            // Устанавливаем значение в текстовый ввод
+            $('#PassportId').val(idValue);
+        });
+    });
+</script>
+

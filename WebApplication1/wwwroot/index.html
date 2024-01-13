@@ -815,6 +815,7 @@
         </footer>
 
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // Найти ссылку по её классу и добавить обработчик события
         document.querySelector('123').addEventListener('click', function (event) {
@@ -824,6 +825,37 @@
             // Выполнить перенаправление на нужный адрес
             window.location.href = '/Views/Autorization/Index';
         });
+    </script>
+    <script>
+        function validateForm() {
+            // Получаем значения полей
+            var lastName = document.getElementsByName('lastName')[0].value;
+            var firstName = document.getElementsByName('firstName')[0].value;
+            var email = document.getElementsByName('email')[0].value;
+            var about = document.getElementsByName('about')[0].value;
+
+            // Проверка на заполненность полей
+            if (!lastName || !firstName || !email || !about) {
+                // Используем SweetAlert для уведомления о незаполненных полях
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка',
+                    text: 'Пожалуйста, заполните все поля!'
+                });
+                return false; // Прерываем отправку формы
+            }
+
+            // Имитируем успешное добавление данных
+            // Ваш код обработки данных и отправки на сервер
+
+            // Используем SweetAlert для уведомления об успешном добавлении
+            Swal.fire({
+                icon: 'success',
+                title: 'Успех',
+                text: 'Данные успешно доставлены!'
+            });
+            return true; // Продолжаем отправку формы
+        }
     </script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>

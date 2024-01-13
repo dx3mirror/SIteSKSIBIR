@@ -1,0 +1,540 @@
+﻿<style>
+    h2 {
+        font: #ffff
+    }
+
+    #sotrudnikForm, #changeForm, #actionForm {
+        display: inline-block;
+        vertical-align: top;
+        width: 30%;
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #282828;
+        border-radius: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        margin-right: 20px;
+        box-sizing: border-box;
+        background-color: #282828; /* Черный цвет фона */
+    }
+
+    #sotrudnikForm, #changeForm, #actionForm,
+    label, input, select, button {
+        color: #fff;
+    }
+
+        #sotrudnikForm:hover, #changeForm:hover, #actionForm:hover {
+            transform: scale(1.05);
+        }
+
+        #sotrudnikForm div, #changeForm div, #actionForm div {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input {
+        font-size: 18px;
+        padding: 10px;
+        display: block;
+        width: 100%;
+        border: 1px solid dodgerblue;
+        background-color: transparent;
+        color: #fff;
+        transition: all 0.5s;
+        outline: none;
+        transform-origin: bottom left;
+        position: relative;
+        z-index: 1;
+    }
+
+        input:hover {
+            border-color: lightblue;
+            color: lightblue;
+        }
+
+        input:focus {
+            border-color: limegreen;
+            background-color: rgba(0, 128, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+    .bar {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+        .bar:before, .bar:after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 0;
+            bottom: 0;
+            background: limegreen;
+            transition: width 0.5s, background 0.5s;
+        }
+
+    input:focus + .bar:before,
+    input:focus + .bar:after {
+        width: 50%;
+        background: limegreen;
+    }
+
+    input:not(:placeholder-shown) + .bar:before,
+    input:not(:placeholder-shown) + .bar:after {
+        width: 50%;
+        background: lightblue;
+    }
+
+    .floating-label {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        pointer-events: none;
+        transition: transform 0.5s, color 0.5s;
+    }
+
+    input:focus + .bar .floating-label,
+    input:not(:placeholder-shown) + .bar .floating-label {
+        transform: translateY(-20px) scale(0.8);
+        color: limegreen;
+    }
+
+    button {
+        background-color: dodgerblue;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        padding: 12px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        button:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        button:hover {
+            background-color: #0066cc;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-image: url('/images/123.jpg');
+        background-size: cover;
+        background-position: center;
+        margin: 20px;
+    }
+
+    body {
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        background-color: #fafafa;
+        margin: 20px;
+    }
+
+    .mdl-textfield {
+        width: 100%;
+    }
+
+    div {
+        margin-bottom: 20px;
+    }
+
+    button {
+        margin-top: 20px;
+        margin-right: 20px;
+    }
+
+    .panels-container {
+        margin: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+        border-radius: 40px;
+        background-color: #282828; /* Добавляем прозрачность таблице */
+    }
+
+    th, td {
+        border: 1px solid #e0e0e0;
+        text-align: left;
+        padding: 16px;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Добавлено изменение цвета текста */
+        background-color: transparent; /* Добавляем прозрачность ячейкам */
+    }
+
+    th {
+        background-color: #f5f5f5;
+        color: #333;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    td {
+        color: #fff; /* Белый цвет текста внутри ячейки */
+    }
+
+    tr {
+        position: relative;
+        transition: box-shadow 0.3s ease-in-out; /* Добавлено изменение тени при наведении на строку */
+    }
+
+    tbody tr:hover {
+        background-color: #f9f9f9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Добавлено применение тени при наведении на строку */
+    }
+
+        tbody tr:hover td {
+            background-color: transparent;
+            color: #000; /* Черный цвет текста при наведении */
+        }
+
+    img {
+        max-width: 50px;
+        max-height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+    thead tr:hover {
+        background-color: transparent;
+    }
+
+    tbody tr:hover img {
+        transform: scale(1.1);
+    }
+
+    .btn-link {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #ffffff;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin: 10px 10px 10px 10px; /* Отступ между кнопками (сверху, справа, снизу, слева) */
+    }
+
+    .buttons-container {
+        margin-top: 20px; /* Отступ сверху для контейнера кнопок (по желанию) */
+    }
+
+    .btn-link:hover {
+        background-color: #0056b3; /* Цвет фона кнопки при наведении */
+        color: #ffffff; /* Цвет текста кнопки при наведении */
+    }
+</style>
+@model WebApplication1.Models.OtpuskViewModel
+<h2 style="color: white;">Сотрудник: @Model.LastName @Model.FirstName @Model.Patranomic</h2>
+<table id="otpuskTable">
+    <thead>
+        <tr>
+            <th style="display: none;">ID</th>
+            <th>Вид отпуска</th>
+            <th>Период от</th>
+            <th>Период по</th>
+            <th>Дней</th>
+            <th>С какого</th>
+            <th>По какое</th>
+            <th>Причина</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var otpusk in Model.OtpuskList)
+        {
+            <tr>
+                <td style="display: none;">@otpusk.Id</td>
+                <td>@otpusk.VidOtpuska</td>
+                <td>@otpusk.PeriodS</td>
+                <td>@otpusk.PeriodPo</td>
+                <td>@otpusk.Day</td>
+                <td>@otpusk.SKakogo</td>
+                <td>@otpusk.PoKakoe</td>
+                <td>@otpusk.Prichina</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form id="actionForm" data-form-type="otpusk" class="animated">
+    <label for="formTitle">Добавление записи:</label>
+    <div>
+        <label for="vidOtpuska">Вид отпуска:</label>
+        <input type="text" id="vidOtpuska" name="vidOtpuska" placeholder="Введите вид отпуска" required>
+    </div>
+
+    <div>
+        <label for="periodS">Период от:</label>
+        <input type="date" id="periodS" name="periodS" placeholder="Введите период от" required>
+    </div>
+
+    <div>
+        <label for="periodPo">Период по:</label>
+        <input type="date" id="periodPo" name="periodPo" placeholder="Введите период по" required>
+    </div>
+
+    <div>
+        <label for="day">Дней:</label>
+        <input type="text" id="day" name="day" placeholder="Введите количество дней" required>
+    </div>
+
+    <div>
+        <label for="sKakogo">С какого:</label>
+        <input type="date" id="sKakogo" name="sKakogo" placeholder="Введите дату начала" required>
+    </div>
+
+    <div>
+        <label for="poKakoe">По какое:</label>
+        <input type="date" id="poKakoe" name="poKakoe" placeholder="Введите дату окончания" required>
+    </div>
+
+    <div>
+        <label for="prichina">Причина:</label>
+        <input type="text" id="prichina" name="prichina" placeholder="Введите причину отпуска" required>
+    </div>
+
+    <button type="button" onclick="addOtpusk()">Добавить информацию</button>
+</form>
+<form id="actionForm" data-form-type="otpusk" class="animated" onsubmit="updateOtpusk(); return false;">
+    <label for="formTitle">Обновление записи:</label>
+    <div style="display: none;">
+        <label for="ID">ID:</label>
+        <input type="number" id="Update_ID" name="ID" placeholder="Введите ID" required>
+    </div>
+    <div>
+        <label for="vidOtpuska">Вид отпуска:</label>
+        <input type="text" id="Update_vidOtpuska" name="vidOtpuska" placeholder="Введите вид отпуска" required>
+    </div>
+
+    <div>
+        <label for="periodS">Начало отпуска:</label>
+        <input type="date" id="Update_periodS" name="periodS" placeholder="Выберите начало отпуска" required>
+    </div>
+
+    <div>
+        <label for="periodPo">Окончание отпуска:</label>
+        <input type="date" id="Update_periodPo" name="periodPo" placeholder="Выберите окончание отпуска" required>
+    </div>
+
+    <div>
+        <label for="day">Дни отпуска:</label>
+        <input type="text" id="Update_day" name="day" placeholder="Введите дни отпуска" required>
+    </div>
+
+    <div>
+        <label for="sKakogo">От:</label>
+        <input type="date" id="Update_sKakogo" name="sKakogo" placeholder="Выберите дату от" required>
+    </div>
+
+    <div>
+        <label for="poKakoe">До:</label>
+        <input type="date" id="Update_poKakoe" name="poKakoe" placeholder="Выберите дату до" required>
+    </div>
+
+    <div>
+        <label for="prichina">Причина:</label>
+        <input type="text" id="Update_prichina" name="prichina" placeholder="Введите причину отпуска" required>
+    </div>
+
+    <button type="submit">Обновить информацию</button>
+</form>
+<form id="actionForm" class="animated">
+    <label for="NameForm">Дейсвтия:</label>
+    <div class="buttons-container">
+        <a class="btn-link" href="/SotrudnikInfo/Index">Вернуться обратно</a>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function updateOtpusk() {
+        var idElement = document.getElementById('Update_ID');
+        var vidOtpuskaElement = document.getElementById('Update_vidOtpuska');
+        var periodSElement = document.getElementById('Update_periodS');
+        var periodPoElement = document.getElementById('Update_periodPo');
+        var dayElement = document.getElementById('Update_day');
+        var sKakogoElement = document.getElementById('Update_sKakogo');
+        var poKakoeElement = document.getElementById('Update_poKakoe');
+        var prichinaElement = document.getElementById('Update_prichina');
+
+        var formData = {
+            Id: parseInt(idElement.value),
+            VidOtpuska: vidOtpuskaElement ? vidOtpuskaElement.value : null,
+            PeriodS: periodSElement.value,
+            PeriodPo: periodPoElement.value,
+            Day: dayElement.value,
+            SKakogo: sKakogoElement.value,
+            PoKakoe: poKakoeElement.value,
+            Prichina: prichinaElement.value
+        };
+
+        $.ajax({
+            url: '/api/UpdateOtpusk',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                // Обработка успешного ответа от сервера
+                console.log(response);
+
+                // Обновляем страницу
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Успех',
+                        timer: 2000,
+                        text: 'Информация об отпуске успешно добавлена!',
+                    }).then(() => {
+                        // Обновляем страницу после закрытия уведомления
+                        location.reload();
+                    });
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка',
+                    timer: 2000,
+                    text: 'Произошла ошибка при добавлении информации об отпуске',
+                });
+            }
+        });
+    }
+
+</script>
+<script>
+    $(document).ready(function () {
+        // Обработчик события щелчка по таблице
+        $('#otpuskTable tbody tr').on('click', function () {
+            // Получаем значение ID из ячейки таблицы
+            var idValue = $(this).find('td:first-child').text();
+
+            // Устанавливаем значение в текстовый ввод
+            $('#Update_ID').val(idValue);
+        });
+    });
+</script>
+<script>
+    function addOtpusk() {
+        var vidOtpuskaElement = document.getElementById('vidOtpuska');
+        var periodSElement = document.getElementById('periodS');
+        var periodPoElement = document.getElementById('periodPo');
+        var dayElement = document.getElementById('day');
+        var sKakogoElement = document.getElementById('sKakogo');
+        var poKakoeElement = document.getElementById('poKakoe');
+        var prichinaElement = document.getElementById('prichina');
+
+        // Проверяем, что все элементы найдены
+        if (!vidOtpuskaElement.value || !periodSElement.value || !periodPoElement.value ||
+            !dayElement.value || !sKakogoElement.value || !poKakoeElement.value || !prichinaElement.value) {
+            // Display an error message with SweetAlert
+            Swal.fire({
+                icon: 'error',
+                title: 'Ошибка',
+                timer: 2000,
+                text: 'Пожалуйста, заполните все обязательные поля!'
+            });
+            return; // Stop further execution if validation fails
+        }
+
+        var formData = {
+            VidOtpuska: vidOtpuskaElement.value,
+            PeriodS: periodSElement.value,
+            PeriodPo: periodPoElement.value,
+            Day: dayElement.value,
+            SKakogo: sKakogoElement.value,
+            PoKakoe: poKakoeElement.value,
+            Prichina: prichinaElement.value
+        };
+
+        // Отправляем данные на сервер
+        $.ajax({
+            url: '/api/AddOtpusk',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                // Обработка успешного ответа от сервера
+                console.log(response);
+
+                // Очищаем поля формы
+                document.getElementById('actionForm').reset();
+
+                // Показываем уведомление об успешном добавлении
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Успех',
+                    timer: 2000,
+                    text: 'Информация об отпуске успешно добавлена!'
+                }).then(() => {
+                    // Обновляем страницу после закрытия уведомления
+                    location.reload();
+                });
+            },
+            error: function (xhr, status, error) {
+                // Обработка ошибки
+                console.log(error);
+
+                console.log(xhr.responseText); // Выводим ответ сервера
+                console.log(status); // Выводим статус запроса
+                console.log(error); // Выводим текст ошибки
+
+                // Показываем уведомление об ошибке
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка',
+                    timer: 2000,
+                    text: 'Произошла ошибка при добавлении информации об отпуске'
+                });
+            }
+        });
+    }
+</script>
+
+
+
+

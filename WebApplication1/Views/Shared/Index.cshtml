@@ -2,333 +2,33 @@
     ViewData["Title"] = "Material Design Form";
 }
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
-    <!-- Подключение стилей и скриптов -->
-<style>
-      * { box-sizing:border-box; }
+    <link rel="stylesheet" href="/css/styleAutorization.css">
 
-        body {
-            font-family: Helvetica;
-            background: linear-gradient(135deg, #050b1b, #0d253f, #020509); /* Более настроенный черно-синий градиент */
-            -webkit-font-smoothing: antialiased;
-            margin: 0;
-            padding: 0;
-            color: #fff; /* Цвет текста по умолчанию */
-        }
-
-        
-        #particles-js {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* Установка z-index ниже нуля помещает частицы за контентом */
-        }
-
-        .login-form {
-            position: relative;
-            z-index: 1;
-            max-width: 360px; /* Максимальная ширина формы */
-            margin: 50px auto; /* Центрирование формы на странице */
-            padding: 40px; /* Внутренний отступ формы */
-            background: rgba(255, 255, 255, 0.2); /* Прозрачный белый фон формы */
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-hgroup { 
-	text-align:center;
-	margin-top: 4em;
-}
-
-h1, h3 { font-weight: 300; }
-
-h1 { color: #ffff; }
-
-h3 { color: #4a89dc; }
-
-        .fade-in-text h1,
-        .fade-in-text h3 {
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        form {
-            width: 380px;
-            margin: 4em auto;
-            padding: 3em 2em 2em 2em;
-            background: linear-gradient(45deg, #ffffff, #f8f8f8, #f0f0f0, #e8e8e8, #ffffff); /* Градиенты на форме */
-            border-radius: 15px; /* Загругление углов формы */
-            border: 1px solid #ebebeb;
-            box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 1px 0px, rgba(0, 0, 0, 0.09804) 0px 1px 2px 0px;
-        }
-
-.group { 
-	position: relative; 
-	margin-bottom: 45px; 
-}
-
-        input {
-            font-size: 18px;
-            padding: 10px;
-            display: block;
-            width: 100%;
-            border: none;
-            border-bottom: 1px solid #000; /* Черные края для инпутов */
-            background-color: transparent; /* Прозрачный фон инпутов */
-            color: #fff; /* Белый цвет текста в инпутах */
-            transition: border-color 0.5s; /* Плавное изменение цвета краев при фокусировке */
-        }
-
-            input:focus {
-                outline: none;
-                border-color: #00f; /* Синий цвет краев при фокусировке */
-            }
-
-/* Label */
-
-        label {
-            color: #fff; /* Белый цвет текста лейблов */
-            font-size: 18px;
-            font-weight: normal;
-            position: absolute;
-            pointer-events: none;
-            left: 10px;
-            top: 10px;
-            transition: top 0.5s, font-size 0.5s;
-        }
-
-
-/* active */
-
-input:focus ~ label, input.used ~ label {
-	top: -20px;
-  transform: scale(.75); left: -2px;
-	/* font-size: 14px; */
-	color: #4a89dc;
-}
-
-
-/* Underline */
-
-.bar {
-	position: relative;
-	display: block;
-	width: 100%;
-}
-
-.bar:before, .bar:after {
-	content: '';
-	height: 2px; 
-	width: 0;
-	bottom: 1px; 
-	position: absolute;
-	background: #4a89dc; 
-	transition: all 0.2s ease;
-}
-
-.bar:before { left: 50%; }
-
-.bar:after { right: 50%; }
-
-
-/* active */
-
-input:focus ~ .bar:before, input:focus ~ .bar:after { width: 50%; }
-
-
-/* Highlight */
-
-.highlight {
-	position: absolute;
-	height: 60%; 
-	width: 100px; 
-	top: 25%; 
-	left: 0;
-	pointer-events: none;
-	opacity: 0.5;
-}
-
-
-/* active */
-
-input:focus ~ .highlight {
-	animation: inputHighlighter 0.3s ease;
-}
-
-
-/* Animations */
-
-.keyframes inputHighlighter {
-	from { background: #4a89dc; }
-	to 	{ width: 0; background: transparent; }
-}
-
-
-/* Button */
-
-        .button {
-            position: relative;
-            display: inline-block;
-            padding: 12px 24px;
-            margin: .3em 0 1em 0;
-            width: 100%;
-            vertical-align: middle;
-            color: #fff;
-            font-size: 16px;
-            line-height: 20px;
-            -webkit-font-smoothing: antialiased;
-            text-align: center;
-            letter-spacing: 1px;
-            background: #414141; /* Цвет фона */
-            border: 0;
-            border-radius: 5px; /* Закругление углов */
-            cursor: pointer;
-            overflow: hidden; /* Скрытие полупрозрачного слоя, выходящего за границы кнопки */
-        }
-
-            .button span {
-                position: relative;
-                z-index: 2; /* Установка z-index для текста, чтобы он оставался непрозрачным */
-            }
-
-            .button::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.3); /* Полупрозрачный слой под текстом */
-                z-index: 1;
-                transition: all 0.15s ease;
-            }
-
-            .button:hover::before {
-                background: rgba(0, 0, 0, 0); /* Полупрозрачный слой полностью прозрачен при наведении */
-            }
-
-
-
-
-/* Ripples container */
-
-.ripples {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: transparent;
-}
-
-
-/* Ripples circle */
-
-.ripplesCircle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
-}
-
-.ripples.is-active .ripplesCircle {
-  animation: ripples .4s ease-in;
-}
-
-
-/* Ripples animation */
-
-.keyframes ripples {
-  0% { opacity: 0; }
-
-  25% { opacity: 1; }
-
-  100% {
-    width: 200%;
-    padding-bottom: 200%;
-    opacity: 0;
-  }
-}
-
-footer { text-align: center; }
-
-footer p {
-	color: #888;
-	font-size: 13px;
-	letter-spacing: .4px;
-}
-
-footer a {
-	color: #4a89dc;
-	text-decoration: none;
-	transition: all .2s ease;
-}
-
-        #loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7); /* Затемненный фон */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        #loading-spinner {
-            width: 40px;
-            height: 40px;
-        }
-
-footer a:hover {
-	color: #666;
-	text-decoration: underline;
-}
-
-footer img {
-	width: 80px;
-	transition: all .2s ease;
-}
-footer img:hover { opacity: .83; }
-    </style>
-	
-</head>
 <body>
     <div id="loading-overlay">
         <div id="loading-spinner"></div>
     </div>
     <hgroup>
-        <h1>Для продолжения работы необходимо авторизироваться</h1>
-        <h3>Введите логин и пароль</h3>
+        <img src="/images/free-icon-builder-9439089.png" alt="Картинка">
+        <h1 id="kadrovik">Kadrovik</h1>
     </hgroup>
     <div id="particles-js"></div>
     <form asp-controller="Authorization" asp-action="Login" method="post" onsubmit="return submitForm()" class="login-form">
-        <div class="group">
-            <input type="text" id="username" name="username" oninput="checkInput(this)">
-            <span class="highlight"></span><span class="bar"></span>
-            <label for="username">Логин:</label>
+        <div class="header">
+            <h1 class="signup-text">Sign Up</h1>
+            <h3 class="keysi-text">Enter login and password</h3>
         </div>
 
         <div class="group">
-            <input type="password" id="password" name="password" required>
+            <input type="text" id="username" name="username" placeholder="Введите логин" oninput="checkInput(this)">
             <span class="highlight"></span><span class="bar"></span>
-            <label for="password">Пароль:</label>
+        </div>
+
+        <div class="group">
+            <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+            <span class="highlight"></span><span class="bar"></span>
         </div>
         <button type="submit" class="button buttonBlue">
             Войти
@@ -340,6 +40,12 @@ footer img:hover { opacity: .83; }
     <div id="error-message" style="color: red; text-align: center;"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var loginForm = document.querySelector('.login-form');
+            loginForm.classList.add('show');
+        });
+    </script>
     <script>
         // JavaScript код для инициализации спиннера
         var spinner = new Spinner().spin(document.getElementById('loading-spinner'));
@@ -367,21 +73,45 @@ footer img:hover { opacity: .83; }
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function makeSparkle() {
+                var h1Element = document.getElementById('kadrovik');
+
+                if (h1Element) {
+                    // Изменяем цвет текста к более ярким оттенкам
+                    h1Element.style.color = 'rgba(255, 150, 255, 0.7)'; // Например, использованы фиолетовые оттенки
+
+                    // Увеличиваем продолжительность перехода
+                    h1Element.style.transition = 'color 5s ease-in-out';
+
+                    // Через некоторое время возвращаем исходный цвет и восстанавливаем скорость перехода
+                    setTimeout(function () {
+                        h1Element.style.color = 'purple';
+                        h1Element.style.transition = 'color 5s ease-in-out';
+                    }, 5000); // Ждем 5 секунд перед возвратом
+                }
+            }
+
+            // Вызываем функцию блеска через интервал
+            setInterval(makeSparkle, 10000); // Вызывать каждые 10 секунд
+        });
+    </script>
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
             particlesJS("particles-js", {
                 particles: {
                     number: {
-                        value: 120, // Увеличьте количество частиц
+                        value: 200, // Увеличено количество частиц
                         density: {
                             enable: true,
                             value_area: 1000
                         }
                     },
                     color: {
-                        value: "#ffffff" // Цвет частиц
+                        value: "#000000" // Изменен цвет частиц на черный
                     },
                     shape: {
-                        type: "circle", // Форма частиц
+                        type: "circle",
                         stroke: {
                             width: 0,
                             color: "#000000"
@@ -391,7 +121,7 @@ footer img:hover { opacity: .83; }
                         }
                     },
                     opacity: {
-                        value: 0.8, // Увеличьте прозрачность частиц
+                        value: 1, // Увеличена прозрачность частиц
                         random: true,
                         anim: {
                             enable: false,
@@ -401,7 +131,7 @@ footer img:hover { opacity: .83; }
                         }
                     },
                     size: {
-                        value: 4, // Увеличьте размер частиц
+                        value: 6, // Увеличен размер частиц
                         random: true,
                         anim: {
                             enable: false,
@@ -413,13 +143,13 @@ footer img:hover { opacity: .83; }
                     line_linked: {
                         enable: true,
                         distance: 150,
-                        color: "#ffffff",
-                        opacity: 0.6, // Увеличьте прозрачность соединительных линий
+                        color: "#000000", // Изменен цвет соединительных линий на черный
+                        opacity: 0.6,
                         width: 1
                     },
                     move: {
                         enable: true,
-                        speed: 2, // Уменьшите скорость движения частиц
+                        speed: 1, // Уменьшена скорость движения частиц
                         direction: "none",
                         random: true,
                         straight: false,
@@ -477,31 +207,26 @@ footer img:hover { opacity: .83; }
     </script>
     <script>
         function submitForm() {
-            // Получаем данные формы
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
 
-            // Отправляем данные на сервер асинхронно
             $.ajax({
                 type: "POST",
-                url: "/Authorization/Login", // Проверьте, что это путь к вашему методу Login
+                url: "/Authorization/Login",
                 data: { username: username, password: password },
                 success: function (data) {
                     if (data.success) {
-                        // Если запрос успешен, перенаправляем на страницу Index
                         window.location.href = "/Sotrudnik/Index";
                     } else {
-                        // Если запрос не успешен, отображаем сообщение об ошибке
                         document.getElementById("error-message").innerHTML = data.errorMessage;
                     }
                 },
-                error: function () {
-                    // Если запрос не успешен, отображаем сообщение об ошибке
+                error: function (xhr, status, error) {
+                    console.error("AJAX request failed:", status, error);
                     document.getElementById("error-message").innerHTML = "Произошла ошибка при отправке запроса";
                 }
             });
 
-            // Предотвращаем стандартное поведение формы
             return false;
         }
     </script>
